@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2709,
-      "sha256": "d921ced36649e5a70385ae3b5b99f0e8dc3546a2c3e82111c4eb324277ce7dc2"
+      "bytes": 2727,
+      "sha256": "da13793d69404f8252887120f683e52bafa35af65fd3fe01097746dc7fab3b05"
     },
     {
       "path": "Start-Z8-Debug.cmd",
@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 64999,
-      "sha256": "586768094b1b07ef3d74a45bb62b4e76bf52d44d8ed168b0284477f167a3c2bb"
+      "sha256": "628462a3187700203da7d26b60c13c1882ec83fbcf274443fdebd5b709909e62"
     },
     {
       "path": "docs/api-reference.md",
@@ -143,8 +143,8 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 5391,
-      "sha256": "09456f6b20abd94ad903818322af5c21f09fef217c80933b81f712c2064bb02d"
+      "bytes": 5451,
+      "sha256": "87ee093744cefa5100dcabc58874e90de523e62c2d4d5a3f302ee004e725c80d"
     },
     {
       "path": "docs/z8-sdk.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "docs/z8-usage.zh-CN.md",
-      "bytes": 8264,
-      "sha256": "621ca9733e9d1742c1ccb1920f0becf8b786f66a825d5b08423317823ed9a22a"
+      "bytes": 9752,
+      "sha256": "8cd7f8e31742d82e5678f58f5911195c9c4adf16582bbf47426cdb48a65d09bf"
     },
     {
       "path": "emulation/c110_menu.ld",

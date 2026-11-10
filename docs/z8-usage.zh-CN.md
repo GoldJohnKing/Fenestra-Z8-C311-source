@@ -1,12 +1,37 @@
 # Fenestra Z8 C3.11 使用手册
 
-这份手册对应 `wlm-2026.11.10-r10` 的七个 WLM。相机需为 Nikon Z 8，配套底座为 **`cold-retry3`**。固件在本地构建，插件可以直接下载。Fenestra 仍处于实验阶段，WonderLantern/Fenestra 已提示潜在变砖风险。[WLM 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10-r10) · [Fenestra 项目说明](https://github.com/WonderLantern/Fenestra)
+这份手册对应 `wlm-2026.11.10-r10` 的七个 WLM。相机需为 Nikon Z 8，配套底座为 **`cold-retry3`**。可下载 WLM 和预编译差分补丁，底座文件在本地生成。Fenestra 仍处于实验阶段，WonderLantern/Fenestra 已提示潜在变砖风险。[Release 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10-r10) · [Fenestra 项目说明](https://github.com/WonderLantern/Fenestra)
 
 ## 准备底座
 
 相机已经运行 `cold-retry3` 时，直接跳到[安装插件](#安装插件)。工作台返回的 `build_identity` 可用来确认底座，预期值为 `f06231d84970cda74ff6afcdb2aad7d03f6fe0bc4a3ec76c15a9cfd40654579a`。
 
-自行构建需要 Windows x64、Python 3.11+ 和 Windows x64 LLVM **19.1.5**。构建脚本固定接受 99,051,117 字节的官方 `Z_8_0311.bin`，输入 SHA-256 为 `d67413c2ede6b9ce8887175f20700bd9fbad2a973a4820968c45503d15d80d96`。[尼康原始文件](https://download.nikonimglib.com/archive8/wP5Vr003qbpC07ibhJ666rmRfF47/Z_8_0311.bin) · [尼康备用下载](https://download.nikonimglib.com/archive8/ulkCY0035nUW07Elwhy66zV8P546/Z_8_0311.bin) · [LLVM 19.1.5](https://github.com/llvm/llvm-project/releases/tag/llvmorg-19.1.5)
+两种方法都使用 99,051,117 字节的官方 `Z_8_0311.bin`，输入 SHA-256 为 `d67413c2ede6b9ce8887175f20700bd9fbad2a973a4820968c45503d15d80d96`。[尼康原始文件](https://download.nikonimglib.com/archive8/wP5Vr003qbpC07ibhJ666rmRfF47/Z_8_0311.bin) · [尼康备用下载](https://download.nikonimglib.com/archive8/ulkCY0035nUW07Elwhy66zV8P546/Z_8_0311.bin)
+
+### 应用预编译补丁
+
+Linux、macOS 和 Windows 可用 Python 3.11+ 的标准库应用补丁。下载 `cold-retry3.fxpatch`，其 SHA-256 为 `395b05e5db84c464e6cb44b178623cf5d237cd9aef5d8ed9ad0b8cfc244758a1`。[下载补丁](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10-r10/cold-retry3.fxpatch)
+
+1. 获取固定标签的源码，在电脑本地磁盘上解压或克隆。[下载源码 ZIP](https://github.com/PIPA12344/Fenestra-Z8-C311-source/archive/refs/tags/cold-retry3-source.zip)
+
+   ```sh
+   git clone --depth 1 --branch cold-retry3-source https://github.com/PIPA12344/Fenestra-Z8-C311-source.git Fenestra-cold-retry3
+   cd Fenestra-cold-retry3
+   ```
+
+2. 把官方 `Z_8_0311.bin` 和 `cold-retry3.fxpatch` 放到源码根目录，也就是 `patcher.py` 所在目录。在 Linux 或 macOS 终端运行下列命令。Windows PowerShell 用 `py -3` 代替 `python3`。
+
+   ```sh
+   python3 -B patcher.py --firmware Z_8_0311.bin --patch cold-retry3.fxpatch --output Z_8_0311-cold-retry3.bin
+   ```
+
+3. 脚本检查完整输入和输出的 SHA-256，并打印 `result_sha256`。确认它等于 `0a9cdd079ab09136982a7bbcb2f3c0ffbe64a12f79cff27d5d5a5da833d7ee43`。输出路径必须是新文件。将本地成品复制到相机更新卡时，把**卡上的成品**命名为 `Z_8_0311.bin`。
+
+补丁流程已在 Windows 和 WSL Linux 验证，生成文件与固定源码重建的 `cold-retry3` 逐字节一致。应用过程使用 Python 标准库，macOS 步骤尚未实机验证。
+
+### 从源码重新编译
+
+完整重编需要 Windows x64、Python 3.11+ 和 Windows x64 LLVM **19.1.5**。[LLVM 19.1.5](https://github.com/llvm/llvm-project/releases/tag/llvmorg-19.1.5)
 
 在 PowerShell 中准备本地环境。
 
@@ -27,7 +52,9 @@ $llvm = 'C:\Program Files\LLVM\bin'
 Get-FileHash -Algorithm SHA256 -LiteralPath build/cold-retry3/Z_8_0311.bin
 ```
 
-脚本会检查原始文件、编译并校验核心，再封装成本地底座 `build/cold-retry3/Z_8_0311.bin`。成品 SHA-256 应为 `0a9cdd079ab09136982a7bbcb2f3c0ffbe64a12f79cff27d5d5a5da833d7ee43`。构建在电脑上完成。选择在机身上使用实验底座时，通过「设定菜单 → 固件版本」的更新入口使用这个本地成品，按机内提示操作；机身已经运行 `cold-retry3` 时可以直接装插件。重新构建可用 `--output-dir build/cold-retry3-check` 指定新目录。[固定源码](https://github.com/PIPA12344/Fenestra-Z8-C311-source/tree/cold-retry3-source)
+脚本会检查原始文件、编译并校验核心，再封装成本地底座 `build/cold-retry3/Z_8_0311.bin`。成品 SHA-256 应为 `0a9cdd079ab09136982a7bbcb2f3c0ffbe64a12f79cff27d5d5a5da833d7ee43`。重新构建可用 `--output-dir build/cold-retry3-check` 指定新目录。[固定源码](https://github.com/PIPA12344/Fenestra-Z8-C311-source/tree/cold-retry3-source)
+
+选择在机身上使用实验底座时，通过「设定菜单 → 固件版本」的更新入口使用本地成品，按机内提示操作。
 
 ## 安装插件
 

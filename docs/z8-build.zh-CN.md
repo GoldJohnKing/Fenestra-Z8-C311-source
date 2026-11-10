@@ -1,6 +1,6 @@
 # Z8 C3.11 本地构建
 
-使用 Release 的七个 WLM 时，按[使用手册](z8-usage.zh-CN.md#准备底座)构建精确的 `cold-retry3`。以下命令供开发者构建其他本地配置。先准备 Python 3.11+ 和 LLVM，将 `clang`、`ld.lld`、`llvm-objcopy`、`llvm-nm` 加入 PATH，再用官方 C3.11 提取无 CRC MAIN。固件包和 MAIN 都会校验 SHA-256。[尼康原始文件](https://download.nikonimglib.com/archive8/wP5Vr003qbpC07ibhJ666rmRfF47/Z_8_0311.bin)
+使用 Release 的七个 WLM 时，可按[使用手册](z8-usage.zh-CN.md#准备底座)应用预编译补丁，或从固定源码重建精确的 `cold-retry3`。以下命令供开发者构建其他本地配置。先准备 Python 3.11+ 和 LLVM，将 `clang`、`ld.lld`、`llvm-objcopy`、`llvm-nm` 加入 PATH，再用官方 C3.11 提取无 CRC MAIN。固件包和 MAIN 都会校验 SHA-256。[尼康原始文件](https://download.nikonimglib.com/archive8/wP5Vr003qbpC07ibhJ666rmRfF47/Z_8_0311.bin)
 
 ```sh
 python -m pip install -r requirements-z8.txt
@@ -49,7 +49,7 @@ python host/package_z8_wlm_plugins.py --components build/local-components --fron
 
 目录参数都使用新路径。组件构建会用原厂输入和选定配方独立核对语言表地址。五个生成的 WLM 分别输出到 `build/local-plugins/FENESTRA/`。画幅、ProRes、H.265 和 Log 色彩使用 Windows x64 LLVM 19.1.5 和 `--optimize s` 重建时，可得到当前 Release 对应的文件。此步骤的照片工具是用于下一步的基础包。
 
-卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 复建说明](z8-usage.zh-CN.md#准备底座) 生成 `build/cold-retry3/core/z8-core.main`。
+卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 源码重编说明](z8-usage.zh-CN.md#从源码重新编译) 生成 `build/cold-retry3/core/z8-core.main`。
 
 ## 照片工具 r10
 
