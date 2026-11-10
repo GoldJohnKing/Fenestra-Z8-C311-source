@@ -53,8 +53,8 @@
     },
     {
       "path": "Z8-PORT-INVENTORY.json",
-      "bytes": 63872,
-      "sha256": "6543e968e880ab61cb085861fa4a816c0ea9fc9df70f06746306ce653943c629"
+      "bytes": 64091,
+      "sha256": "be4205c72b20a69c324defdbe6d202e2c0533f36d258e424e2d68fac392efd2b"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,8 +108,13 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 3870,
-      "sha256": "f15553f1ac6d0cce76af123729706deaafb9ae9693bf248e623706606dd90520"
+      "bytes": 3846,
+      "sha256": "618132cb79230b83337bf3169ef8c94796eaea977e29b7087efa19cea620630f"
+    },
+    {
+      "path": "docs/z8-cold-retry3-build.zh-CN.md",
+      "bytes": 2505,
+      "sha256": "546305d2876c9137c36ee5b748fe05b23258419576424a6309056524558fe778"
     },
     {
       "path": "docs/z8-sdk.md",
@@ -793,8 +798,8 @@
     },
     {
       "path": "include/fenestra_exec.h",
-      "bytes": 3349,
-      "sha256": "4f35561e7a576fd8881311c548e3ad03bfdca1e62eef3507bdfb14e17adb2c8a"
+      "bytes": 3008,
+      "sha256": "0b91f2e8579ebae9eb65f4ff44c841dc4de2033c28d3b7f9210fc6dad22145ac"
     },
     {
       "path": "include/fenestra_exfat.h",
@@ -1492,6 +1497,11 @@
       "sha256": "5dcd9506b973b60abc99c10a553d9134f25ade605403c2181d4f40af97ec01c7"
     },
     {
+      "path": "scripts/build_cold_retry3.py",
+      "bytes": 4186,
+      "sha256": "363226e8a0a7b0ab57330c37b9168a530f3369d6ae416765e2e296d940a89c68"
+    },
+    {
       "path": "scripts/prepare_z8_feature_toolkit.py",
       "bytes": 1972,
       "sha256": "32ee8dd2d2f1506ab386dc87a33cc73f19ef45edb65e3aaa4be7430f8f3401d3"
@@ -1533,8 +1543,8 @@
     },
     {
       "path": "src/exec.c",
-      "bytes": 14815,
-      "sha256": "ccdf3c672093989c41afe1a5fd008cce6bb03a79fa88329e68f0f40cdb46dd4d"
+      "bytes": 14087,
+      "sha256": "771ba53ed755732a02cb2a8408ef14e2f9d73a27ed7462acb6a0799b8a0d8c26"
     },
     {
       "path": "src/file_card.c",
@@ -1873,8 +1883,8 @@
     },
     {
       "path": "src/platform/z8_c311_full/menu.c",
-      "bytes": 99975,
-      "sha256": "fb78a5c3640790684d04e692c0aaaae8cb8302b6da95f9fb315f3dbb6e60b857"
+      "bytes": 99956,
+      "sha256": "5927133504c3311560deeba6741fe0d391141c9408670e76ca468bfd7f8504c7"
     },
     {
       "path": "src/platform/z8_c311_full/menu_data.h",
@@ -1883,13 +1893,13 @@
     },
     {
       "path": "src/platform/z8_c311_full/module_session.c",
-      "bytes": 16483,
-      "sha256": "1d08360e9dcc1a4b424cec8caffdc72bc0862e05417899dd076b360092473c9d"
+      "bytes": 15209,
+      "sha256": "48448c7eb70ec180fb88b312e259790e907c828c2ce5391a69e437f5ceb8677e"
     },
     {
       "path": "src/platform/z8_c311_full/module_session.h",
-      "bytes": 3477,
-      "sha256": "b8d5779cfecc9bfea3e4d455b41d49296edaa3ac9ff0453231a7d5ad7612dcc2"
+      "bytes": 3332,
+      "sha256": "5a08978c2cff60b71b6e7c98ac9dfdf60ecd2458e32a92cef5538c014b5bae6d"
     },
     {
       "path": "src/platform/z8_c311_full/module_stage.c",
@@ -1903,13 +1913,13 @@
     },
     {
       "path": "src/platform/z8_c311_full/module_worker.c",
-      "bytes": 15135,
-      "sha256": "f461f39ea7258e8af24be9881356027c9d1d9eb0cbd0d7cd6b35a0d9354af3e0"
+      "bytes": 14227,
+      "sha256": "829d672d302918672de54471857856dc9338f9086a7583caf42f146a7bf41fab"
     },
     {
       "path": "src/platform/z8_c311_full/module_worker.h",
-      "bytes": 2135,
-      "sha256": "bce4ef571e6f92525b442eacecc9d3e01301aa6d0156f2347a3906bfb85c0dc5"
+      "bytes": 2147,
+      "sha256": "2e4d537db09815b26838fc58577681d66e415d121533c202384d9c76167df5f2"
     },
     {
       "path": "src/platform/z8_c311_full/native_capsules.c",

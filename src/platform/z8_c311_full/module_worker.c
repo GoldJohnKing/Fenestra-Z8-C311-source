@@ -22,10 +22,8 @@ struct FxZ8ModuleWorker {
     uint32_t return_valid;
     FxPanicReport panic_report;
     FxWorkerWait wait;uint64_t tick_due;FxWorkerPace pace;
-    void *session_storage;uint32_t session_bytes;
 };
-/* ABI 2 publishes a null session after releasing it on normal stop. */
-const uint32_t fx_native_load_owner_metadata[]={0x46584c4fu,2u,offsetof(FxZ8ModuleWorker,session)};
+const uint32_t fx_native_load_owner_metadata[]={0x46584c4fu,1u,offsetof(FxZ8ModuleWorker,session)};
 static uint64_t clock_ms(void) {
     uint64_t n,hz;__asm__ volatile("mrs %0,cntpct_el0; mrs %1,cntfrq_el0":"=r"(n),"=r"(hz));
     return hz && hz<=UINT32_MAX?n/hz*1000u+n%hz*1000u/hz:UINT64_MAX;
@@ -106,16 +104,7 @@ static void run(void *context) {
             if(now>=w->stop_deadline){panic(w,FX_TIMEOUT);continue;}
             r=fx_service_stop(&w->service);
             if(r==FX_OK) {
-                r=fx_z8_session_retire(w->session);
-                if(r!=FX_OK){panic(w,r);continue;}
-                owner->module_image=0;
-                w->session=0;w->buffers=(FxZ8SessionBuffers){0};
-                ((void (*)(void *))(uintptr_t)FX_Z8_ADDR_40d30498)(w->session_storage);
-                w->session_storage=0;
-                if(owner->accounting) {
-                    FxZ8Services *services=w->service.backend.context;
-                    (void)fx_account_release(&services->accounting.allocation,w->session_bytes,1u,1u);
-                }
+                (void)fx_z8_session_close(w->session);
                 atomic_store_explicit(&w->phase,FX_Z8_WORKER_QUIESCED,memory_order_release);
                 for(;;)park(w,fx_worker_wait_ticket(&w->wait),UINT32_MAX);
             }
@@ -180,21 +169,18 @@ static void run(void *context) {
         if(fx_z8_task_delay_ticks(1u)!=FX_OK)panic(w,FX_IO);
     }
 }
-uint32_t fx_z8_worker_bytes(uint32_t native_stack_bytes) {
-    return (uint32_t)sizeof(FxZ8ModuleWorker)+4095u+native_stack_bytes;
-}
+uint32_t fx_z8_worker_bytes(void){return (uint32_t)sizeof(FxZ8ModuleWorker);}
 FxResult fx_z8_worker_start(void *allocation,uint32_t bytes,void *session_allocation,uint32_t session_bytes,
                           const FxDiscoveredModule *entry,uint32_t owner,uint32_t generation,uint32_t capabilities,
                           FxServiceBackend backend,FxZ8ModuleWorker **out) {
     if(!out || *out || !entry || !owner || owner>65535u || !generation || !backend.call || !backend.stop ||
        !callback((uintptr_t)backend.call) || !callback((uintptr_t)backend.stop) ||
-       !native_ram(allocation,bytes) ||
+       !native_ram(allocation,bytes) || bytes<sizeof(FxZ8ModuleWorker) ||
        !native_ram(session_allocation,session_bytes) ||
        overlap(allocation,bytes,session_allocation,session_bytes) ||
        overlap(allocation,bytes,entry,sizeof(*entry)) || overlap(session_allocation,session_bytes,entry,sizeof(*entry)) ||
        overlap(allocation,bytes,out,sizeof(*out)) || overlap(session_allocation,session_bytes,out,sizeof(*out)) ||
-       !entry->enabled || !fx_module_stacks_valid(entry->stacks) || bytes<fx_z8_worker_bytes(entry->stacks.native_bytes) ||
-       entry->bytes<=128u || entry->bytes>FX_NATIVE_MODULE_PACKAGE_LIMIT || !entry->image_bytes || entry->image_bytes>FX_NATIVE_MODULE_IMAGE_LIMIT || entry->period_ms<10u || entry->period_ms>10000u ||
+       !entry->enabled || !fx_module_stacks_valid(entry->stacks) || entry->bytes<=128u || entry->bytes>FX_NATIVE_MODULE_PACKAGE_LIMIT || !entry->image_bytes || entry->image_bytes>FX_NATIVE_MODULE_IMAGE_LIMIT || entry->period_ms<10u || entry->period_ms>10000u ||
        !entry->budget_ms || entry->budget_ms>100u || (entry->required&~capabilities) ||
        !fx_service_name(entry->file,sizeof(entry->file),1))return FX_ARGUMENT;
     uint32_t n=0;while(n<sizeof(entry->file) && entry->file[n])++n;
@@ -209,10 +195,7 @@ FxResult fx_z8_worker_start(void *allocation,uint32_t bytes,void *session_alloca
     (void)fx_worker_wait_init(&w->wait,0,entry->period_ms);
     fx_service_init(&w->service,owner,generation,capabilities,backend);
     w->service.wake_context=&w->wait;w->service.wake_callback=fx_worker_wait_signal;
-    void *stack=(void *)(((uintptr_t)allocation+sizeof(*w)+4095u)&~(uintptr_t)4095u);
-    w->session_storage=session_allocation;w->session_bytes=session_bytes;
-    FxResult r=fx_z8_session_init_stacks(session_allocation,session_bytes,entry->bytes,entry->image_bytes,
-        entry->stacks,stack,&w->session,&w->buffers);
+    FxResult r=fx_z8_session_init_stacks(session_allocation,session_bytes,entry->bytes,entry->image_bytes,entry->stacks,&w->session,&w->buffers);
     if(r!=FX_OK){panic(w,r);return r;}
     atomic_store_explicit(&w->phase,FX_Z8_WORKER_LOADING,memory_order_release);*out=w;
     r=fx_z8_task_start(&w->task,run,w,w->buffers.kernel_stack,w->buffers.stack_bytes);

@@ -17,22 +17,23 @@ FxResult fx_z8_session_layout_stacks(uint32_t package_bytes,uint32_t image_bytes
 typedef struct FxZ8ModuleSession FxZ8ModuleSession;
 FxResult fx_z8_session_account(FxZ8ModuleSession *,FxAccountRow *);
 FxResult fx_z8_session_file_observer(FxZ8ModuleSession *,FxFileObserver);
-/* The caller owns separate Nikon heap allocations for the session and the
- * original task stack. Init/load/invoke are serialized by the worker.
+/* The caller owns this normal Nikon heap allocation and the native task that
+ * uses it. Init/load/invoke are serialized by that worker, after Activate.
  * No native task, translation table or exception vector is edited by init.
  * The original task stack MUST be the returned kernel_stack/stack_bytes.
  * Normal file IO uses original tables. Only validated private execution uses
  * the owned views. No module-supplied pointer may reach a native GUI/service.
  * Load scratch is separate and released on original tables before private
- * publication; uncertain cleanup retains it. */
+ * publication; uncertain cleanup retains it. Close retains the execution
+ * allocation/image/continuation ownership until reboot. */
 typedef struct {
     void *api,*exchange,*kernel_stack;uint32_t exchange_bytes,stack_bytes;
     const FxModule *module;void *image;uint32_t image_bytes;
 } FxZ8SessionBuffers;
 FxResult fx_z8_session_init(void *allocation,uint32_t bytes,uint32_t package_bytes,uint32_t image_bytes,
-                             void *native_stack,FxZ8ModuleSession **,FxZ8SessionBuffers *);
+                             FxZ8ModuleSession **,FxZ8SessionBuffers *);
 FxResult fx_z8_session_init_stacks(void *allocation,uint32_t bytes,uint32_t package_bytes,uint32_t image_bytes,
-                             FxModuleStacks,void *native_stack,FxZ8ModuleSession **,FxZ8SessionBuffers *);
+                             FxModuleStacks,FxZ8ModuleSession **,FxZ8SessionBuffers *);
 FxResult fx_z8_session_load(FxZ8ModuleSession *,const char *native_path,const char *logical_path,
                            uint32_t module_bytes,const uint8_t digest[32],uint64_t capabilities);
 FxResult fx_z8_session_load_frozen(FxZ8ModuleSession *,const char *logical_path,
@@ -46,8 +47,5 @@ FxResult fx_z8_session_load_frozen(FxZ8ModuleSession *,const char *logical_path,
 FxResult fx_z8_session_invoke(FxZ8ModuleSession *,uint32_t budget_ms,int *module_result);
 int fx_z8_session_pending(const FxZ8ModuleSession *);
 FxResult fx_z8_session_close(FxZ8ModuleSession *);
-/* Worker-only, after normal native provider stop ACK and restored stock
- * tables. Faulted sessions retain all backing storage for diagnostics. */
-FxResult fx_z8_session_retire(FxZ8ModuleSession *);
 const FxZ8ExecDiagnostics *fx_z8_session_diagnostics(const FxZ8ModuleSession *);
 #endif

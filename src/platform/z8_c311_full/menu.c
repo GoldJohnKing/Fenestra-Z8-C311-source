@@ -813,7 +813,7 @@ static void load_once(State *s) {
             FxExecLayout layout;
             r=fx_z8_session_layout_stacks(entry->bytes,entry->image_bytes,entry->stacks,&layout);
             if(r!=FX_OK)break;
-            uint32_t bytes = fx_z8_worker_bytes(entry->stacks.native_bytes), session_bytes = layout.bytes + 4096u;
+            uint32_t bytes = fx_z8_worker_bytes(), session_bytes = layout.bytes + 4096u;
             void *w = allocate(bytes), *session = allocate(session_bytes);
             FxZ8Services *services = allocate((uint32_t)sizeof(*services));
             if (!w || !session || !services) {
@@ -1001,9 +1001,9 @@ static void restart_runtime(State *s) {
     fx_z8_storage_init(&s->storage,&fx_z8_startup_file_profile);
     atomic_store(&s->startup_files.native_error,0u);
 }
-/* Loader-only rearm. The stopped worker released its execution arena before
- * ACK; parked task stacks and old UI callback owners stay retained. Allocate
- * fresh executable owners with a new generation on next activation. */
+/* Loader-only rearm. No old worker/session/UI is freed or restarted: native
+ * callbacks and parked tasks may still retain them. Reinspect the card and
+ * allocate fresh executable owners with a new generation on next activation. */
 static int resume_once(State *s) {
     uint32_t stop=atomic_load(&s->shutdown),ticket=atomic_load(&s->resume_requested);
     if(!ticket)return 0;

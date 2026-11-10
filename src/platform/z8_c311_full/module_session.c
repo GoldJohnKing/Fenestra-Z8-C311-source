@@ -53,9 +53,7 @@ static FxResult fail(FxZ8ModuleSession *s,FxResult error) {
 }
 static int identity(void *context,uintptr_t va,uint32_t flags) {
     FxZ8ModuleSession *s=context;uint64_t par;
-    uintptr_t stack=(uintptr_t)s->native_stack;
     if(!((va>=s->base && va<=s->end-4096u) ||
-         (va>=stack && va<=stack+s->layout.native_stack_bytes-4096u) ||
          (!(flags&FX_Z8_MAP_WRITE) && va>=CODE_BEGIN && va<CODE_END)))return 0;
     if(flags&FX_Z8_MAP_WRITE)
         __asm__ volatile("at s1e1w,%1; isb; mrs %0,par_el1":"=r"(par):"r"(va):"memory");
@@ -80,25 +78,20 @@ FxResult fx_z8_session_layout(uint32_t package,uint32_t image,FxExecLayout *layo
 }
 FxResult fx_z8_session_layout_stacks(uint32_t package,uint32_t image,FxModuleStacks stacks,FxExecLayout *layout) {
     if(package>PACKAGE || image>IMAGE)return FX_BOUNDS;
-    return fx_exec_layout_split_stack((uint32_t)sizeof(FxZ8ModuleSession),package,image,EXCHANGE,stacks,layout);
+    return fx_exec_layout_stacks((uint32_t)sizeof(FxZ8ModuleSession),package,image,EXCHANGE,0u,stacks,layout);
 }
 FxResult fx_z8_session_init(void *allocation,uint32_t bytes,uint32_t package,uint32_t image,
-                             void *native_stack,FxZ8ModuleSession **out,FxZ8SessionBuffers *buffers) {
+                             FxZ8ModuleSession **out,FxZ8SessionBuffers *buffers) {
     return fx_z8_session_init_stacks(allocation,bytes,package,image,
-        (FxModuleStacks){FX_MODULE_STACK_DEFAULT,FX_MODULE_STACK_DEFAULT},native_stack,out,buffers);
+        (FxModuleStacks){FX_MODULE_STACK_DEFAULT,FX_MODULE_STACK_DEFAULT},out,buffers);
 }
 FxResult fx_z8_session_init_stacks(void *allocation,uint32_t bytes,uint32_t package,uint32_t image,
-                             FxModuleStacks stacks,void *native_stack,FxZ8ModuleSession **out,FxZ8SessionBuffers *buffers) {
+                             FxModuleStacks stacks,FxZ8ModuleSession **out,FxZ8SessionBuffers *buffers) {
     FxExecLayout layout;FxResult planned=fx_z8_session_layout_stacks(package,image,stacks,&layout);
     if(planned!=FX_OK)return planned;
-    uintptr_t stack=(uintptr_t)native_stack;
     if(!allocation || !out || *out || !buffers || bytes<layout.bytes+4096u || bytes>layout.bytes+8192u ||
        (uintptr_t)allocation<FX_Z8_RAM_BEGIN ||
        (uintptr_t)allocation>FX_Z8_RAM_END-bytes ||
-       stack<FX_Z8_RAM_BEGIN || stack>FX_Z8_RAM_END-stacks.native_bytes || (stack&4095u) ||
-       overlaps((uintptr_t)allocation,bytes,stack,stacks.native_bytes) ||
-       overlaps(stack,stacks.native_bytes,(uintptr_t)out,sizeof(*out)) ||
-       overlaps(stack,stacks.native_bytes,(uintptr_t)buffers,sizeof(*buffers)) ||
        overlaps((uintptr_t)allocation,bytes,(uintptr_t)out,sizeof(*out)) ||
        overlaps((uintptr_t)allocation,bytes,(uintptr_t)buffers,sizeof(*buffers)) ||
        overlaps((uintptr_t)out,sizeof(*out),(uintptr_t)buffers,sizeof(*buffers)))return FX_ARGUMENT;
@@ -109,7 +102,7 @@ FxResult fx_z8_session_init_stacks(void *allocation,uint32_t bytes,uint32_t pack
     memset(s,0,sizeof(*s));s->base=base;s->end=end;s->layout=layout;
     s->private_tables=(uint64_t (*)[512])(base+layout.private_tables);
     s->user_tables=(uint64_t (*)[512])(base+layout.user_tables);
-    s->native_stack=native_stack;s->api=(uint8_t *)(base+layout.api);
+    s->native_stack=(uint8_t *)(base+layout.native_stack);s->api=(uint8_t *)(base+layout.api);
     s->exchange=(uint8_t *)(base+layout.exchange);s->user_stack=(uint8_t *)(base+layout.user_stack);
     s->image=(uint8_t *)(base+layout.image);
     memset(s->api,0,4096u);memset(s->exchange,0,EXCHANGE);
@@ -119,8 +112,6 @@ FxResult fx_z8_session_init_stacks(void *allocation,uint32_t bytes,uint32_t pack
 }
 static FxResult user_view(FxZ8ModuleSession *s) {
     FxResult r=fx_z8_space_init(&s->user_space,s->user_tables,s->layout.tables,s,identity);
-    if(r==FX_OK)r=fx_z8_space_map(&s->user_space,(uintptr_t)s->native_stack,s->layout.native_stack_bytes,
-        FX_Z8_MAP_READ|FX_Z8_MAP_WRITE);
     if(r!=FX_OK)return r;
     uintptr_t trampoline=(uintptr_t)fx_z8_user_return;
     if((trampoline&4095u) || trampoline<CODE_BEGIN || trampoline>CODE_END-4096u)return FX_CAPABILITY;
@@ -200,8 +191,6 @@ static FxResult load_source(FxZ8ModuleSession *s,const char *native_path,const c
                    s->stage.loader.module.stacks.user_bytes!=s->layout.user_stack_bytes))r=FX_INTEGRITY;
     if(r==FX_OK)r=fx_z8_space_init(&s->private_space,s->private_tables,s->layout.tables,s,identity);
     if(r==FX_OK)r=fx_z8_space_map(&s->private_space,s->base,s->layout.bytes,FX_Z8_MAP_READ|FX_Z8_MAP_WRITE);
-    if(r==FX_OK)r=fx_z8_space_map(&s->private_space,(uintptr_t)s->native_stack,s->layout.native_stack_bytes,
-        FX_Z8_MAP_READ|FX_Z8_MAP_WRITE);
     if(r==FX_OK)r=fx_z8_space_map(&s->private_space,CODE_BEGIN,(uint32_t)(CODE_END-CODE_BEGIN),FX_Z8_MAP_READ|FX_Z8_MAP_EXECUTE);
     if(r==FX_OK) {s->image_leaf=image_leaf(s);if(!s->image_leaf)r=FX_CAPABILITY;}
     if(r==FX_OK)r=fx_z8_space_seal(&s->private_space,&s->private_root);
@@ -238,14 +227,6 @@ FxResult fx_z8_session_close(FxZ8ModuleSession *s) {
     if(s->busy)return FX_BUSY;
     s->closed=1u;s->retained=1u;if(s->phase!=FAILED)s->phase=CLOSED;
     return FX_OK; /* Admission closed; native services/DMA still require their own stop ACK. */
-}
-FxResult fx_z8_session_retire(FxZ8ModuleSession *s) {
-    if(!s || s->phase!=READY || s->closed || s->busy || s->load_buffer.data || s->load_buffer.retained ||
-       s->exec.diagnostics.faults || s->exec.diagnostics.context_errors)return FX_STATE;
-    /* Every invocation returned to the worker under stock tables, including
-     * IRQ preemption. An abandoned EL0 continuation lives only in this arena. */
-    s->closed=1u;s->phase=CLOSED;
-    return FX_OK;
 }
 const uint32_t fx_native_load_buffer_metadata[]={0x46584c42u,1u,
     offsetof(FxZ8ModuleSession,load_buffer),offsetof(FxModuleLoadBuffer,data),offsetof(FxModuleLoadBuffer,bytes),

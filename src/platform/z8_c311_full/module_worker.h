@@ -11,9 +11,9 @@
 typedef struct FxZ8ModuleWorker FxZ8ModuleWorker;
 enum {FX_Z8_WORKER_EMPTY,FX_Z8_WORKER_LOADING,FX_Z8_WORKER_ACTIVE,
       FX_Z8_WORKER_STOPPING,FX_Z8_WORKER_QUIESCED,FX_Z8_WORKER_PANIC,FX_Z8_WORKER_FINISHED};
-uint32_t fx_z8_worker_bytes(uint32_t native_stack_bytes);
-/* Verified directory entry + native backend, after Activate only. The worker
- * and native stack remain allocated while the original task is parked.
+uint32_t fx_z8_worker_bytes(void);
+/* Verified directory entry + native backend, after Activate only. Both allocations
+ * come from the normal Nikon allocator and are retained until camera reboot.
  * The backend copies/validates all requests and owns hardware stop/leases.
  * Starting a task is not acceptance of a RAW mode or a completed activation.
  * After initialization starts, failures retain BOTH allocations even when
@@ -24,8 +24,8 @@ FxResult fx_z8_worker_start(void *worker_allocation,uint32_t worker_bytes,
                           uint32_t verified_capabilities,FxServiceBackend,
                           FxZ8ModuleWorker **out);
 FxResult fx_z8_worker_action(FxZ8ModuleWorker *,uint32_t action);
-/* Native shutdown only: release the session after backend stop ACK; retain the
- * worker and its native stack for the parked task. */
+/* Native shutdown only: closes admission, waits for backend stop ACK; retains
+ * all allocations/unfinished EL0 continuation. No UI Deactivate or unload. */
 void fx_z8_worker_shutdown(FxZ8ModuleWorker *);
 uint32_t fx_z8_worker_phase(const FxZ8ModuleWorker *);
 uint32_t fx_z8_worker_error(const FxZ8ModuleWorker *);
