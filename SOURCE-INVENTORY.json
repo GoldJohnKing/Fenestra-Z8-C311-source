@@ -53,8 +53,8 @@
     },
     {
       "path": "Z8-PORT-INVENTORY.json",
-      "bytes": 63970,
-      "sha256": "03147ab45c5895972a9af38b1790fd8ab4a6f5f43a967ded8c860a99f56ab5d0"
+      "bytes": 64674,
+      "sha256": "1daf9526aeedbf47a7642266f465ce18a64aad5980c62662c1e7533a1aee8aa8"
     },
     {
       "path": "docs/api-reference.md",
@@ -85,6 +85,41 @@
       "path": "docs/module-format.md",
       "bytes": 3961,
       "sha256": "098d219bcc158302fa8de2a1432e5fbb44c0eefeba308f1e39da18332e9e6be5"
+    },
+    {
+      "path": "docs/plugins/card_wav.md",
+      "bytes": 1300,
+      "sha256": "e5b4b67a6da4161832e334b396adf706049ad39197532908b944fcd967f978d4"
+    },
+    {
+      "path": "docs/plugins/framing.md",
+      "bytes": 1276,
+      "sha256": "f946bc9cc825b615b5584fa83fe5addf3edbe1f74cea0fdde683401f9b231669"
+    },
+    {
+      "path": "docs/plugins/h265.md",
+      "bytes": 967,
+      "sha256": "3242de9e5a23f4a535190a580b045a4d91f03d8972e050c74ff4764d0532de30"
+    },
+    {
+      "path": "docs/plugins/log_colour.md",
+      "bytes": 1400,
+      "sha256": "1eb8215b6b7256fb25f30eaeaaec406a555aaa24f23d10d68c5afc81c30bf69f"
+    },
+    {
+      "path": "docs/plugins/photo_tools.md",
+      "bytes": 3874,
+      "sha256": "dc000a4554246c27a9a761ceb7b8679af930f38458405f67288456c83056d975"
+    },
+    {
+      "path": "docs/plugins/portrait_video.md",
+      "bytes": 924,
+      "sha256": "0789ebf5459c8b4bb39419e41f1be0ec416936f92fd6e01ebde90a7f5c89966f"
+    },
+    {
+      "path": "docs/plugins/prores.md",
+      "bytes": 1014,
+      "sha256": "a720cf369254316a5ebfdedf3be8fab4bc050d84b87b1b7373ea2184b5f017a6"
     },
     {
       "path": "docs/porting.md",
@@ -118,8 +153,8 @@
     },
     {
       "path": "docs/z8-usage.zh-CN.md",
-      "bytes": 12700,
-      "sha256": "82ff745e28a4df497fec15b35f45bfc7b282a05efe996f2e132f35fcfae73d77"
+      "bytes": 8285,
+      "sha256": "076fd4b8805f66a3913880d7a44c50e695c745e8da0f3fad9da7a3e02e998a17"
     },
     {
       "path": "emulation/c110_menu.ld",
@@ -1323,8 +1358,8 @@
     },
     {
       "path": "modules/photo_tools/README.md",
-      "bytes": 2985,
-      "sha256": "c680642bb8de52996156eb9a6f8e959e5fa9925e18ba7174c311796ee81fbbeb"
+      "bytes": 2977,
+      "sha256": "9b5fd8388aa7f8c1a2fb6e0b9d502e42710b5bacb4646ca44881e367e4b69cd4"
     },
     {
       "path": "modules/photo_tools/module.c",

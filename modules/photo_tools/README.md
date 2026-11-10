@@ -1,6 +1,6 @@
 # Photo tools 插件（Z8 C3.11）
 
-公开版的 `photo_tools.wlm` 配套 `cold-retry3`，通过 Fenestra 加载照片工具的原生组件和菜单。使用机内「Z8Mouldes → 照片工具」查看状态和批量合并。RAW 预拍仍由相机原厂照片菜单操作。[安装和操作步骤](../../docs/z8-usage.zh-CN.md#照片工具)
+公开版的 `photo_tools.wlm` 配套 `cold-retry3`，通过 Fenestra 加载照片工具的原生组件和菜单。使用机内「Z8Mouldes → 照片工具」查看状态和批量合并。RAW 预拍仍由相机原厂照片菜单操作。[安装和操作步骤](../../docs/plugins/photo_tools.md)
 
 本模块使用 `camera.photo.tools/v1` 服务。原生实现采用 NikonFirmwarePatch 的固定版本，运行中的任务和文件写入由该组件管理。
 
