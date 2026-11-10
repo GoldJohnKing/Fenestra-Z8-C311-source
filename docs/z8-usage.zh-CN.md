@@ -107,6 +107,11 @@ Get-FileHash -Algorithm SHA256 -LiteralPath build/cold-retry3/Z_8_0311.bin
 3. 自动化也走同一个可见工作台。可以先运行 `python host/workbench_client.py workbench_status` 检查本地窗口，已连接相机时，可运行 `python host/workbench_client.py refresh --id z8-status-001`，在输出中核对 `build_identity`。每个操作使用独立的请求 ID。命令等待超时后用 `python host/workbench_client.py result --id z8-status-001` 查询同一请求。「调用记录」保存在本地。
 4. 准备拍摄时断开工作台连接并拔下 USB。日常安装插件可用读卡器，工作台直接写卡需要匹配底座的本地原生调用配置。
 
+## 已知问题
+
+- **高速 RAW 解码。** DX C60 RAW 在 Capture One 中无法解码。FX C120 RAW 在 Adobe Camera Raw（ACR）和 Capture One 中无法解码。像素蛋糕可解码这两个档位的 RAW。[照片工具的兼容性说明](plugins/photo_tools.md#raw-解码兼容性)
+- **快速关开机可能卡死。** 如果快速关机再开机后机身卡死，把电源开关拨到 OFF，等存储卡访问灯熄灭后取下电池，片刻后装回，再开机完成冷启动。
+
 ## 常见情况
 
 | 看到什么 | 怎么检查 |

@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 64999,
-      "sha256": "628462a3187700203da7d26b60c13c1882ec83fbcf274443fdebd5b709909e62"
+      "sha256": "d9e7edfd7ccca89a2bbdf0ca93dacb015c6c42f0fba608fec54aef47364583c5"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/plugins/photo_tools.md",
-      "bytes": 4207,
-      "sha256": "5b4442708ac79abc0964b209f35b18036455cf4e43c853a26eb1e056c81cfe52"
+      "bytes": 4487,
+      "sha256": "ac8d00b71d92ab408fd3e526f9152b356d80ce2de00453d24566c808dd6c33f3"
     },
     {
       "path": "docs/plugins/portrait_video.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "docs/z8-usage.zh-CN.md",
-      "bytes": 9752,
-      "sha256": "8cd7f8e31742d82e5678f58f5911195c9c4adf16582bbf47426cdb48a65d09bf"
+      "bytes": 10241,
+      "sha256": "7085a7e2cb2497c903a2e1f7447e73732ca14ac32ab6977ce714902cf1c2f0bf"
     },
     {
       "path": "emulation/c110_menu.ld",
