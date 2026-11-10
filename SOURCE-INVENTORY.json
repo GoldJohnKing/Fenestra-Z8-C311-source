@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 63872,
-      "sha256": "6543e968e880ab61cb085861fa4a816c0ea9fc9df70f06746306ce653943c629"
+      "sha256": "9535b2b8bc9aea0aa27246d0c42903dcaf331d9803e6ef20541fe6c606776be6"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 3870,
-      "sha256": "f15553f1ac6d0cce76af123729706deaafb9ae9693bf248e623706606dd90520"
+      "bytes": 3928,
+      "sha256": "a6c18ddb78b331c653324eb6e4e2992e4409427fe5e1b84127efdba2ea1137f7"
     },
     {
       "path": "docs/z8-sdk.md",

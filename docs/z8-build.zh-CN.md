@@ -43,7 +43,7 @@ python host/package_z8_wlm_plugins.py --components build/local-components --fron
 
 目录参数都使用新路径。组件构建会用原厂输入和选定配方独立核对语言表地址。五个生成的 WLM 分别输出到 `build/local-plugins/FENESTRA/`。
 
-卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的既有 cold-retry3 底座 MAIN 作为本地输入。重新编译的底座可能具有不同构建身份，尤其是 LLVM 版本或输出路径不同的时候。
+卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 复建说明](https://github.com/PIPA12344/Fenestra-Z8-C311-source/blob/cold-retry3-source/docs/z8-cold-retry3-build.zh-CN.md) 生成 `build/cold-retry3/core/z8-core.main`。
 
 ## Windows 调试工作台
 
