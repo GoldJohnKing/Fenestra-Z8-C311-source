@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2744,
-      "sha256": "27f8bc2cc1672188bb841d5a92f64d02e362d274b03ca711df53931bc610f217"
+      "bytes": 2701,
+      "sha256": "c201eb1883494d94a627ac19476bb2c0c45c9ccb56169729bb5794f7ca716dc1"
     },
     {
       "path": "Start-Z8-Debug.cmd",
@@ -53,8 +53,8 @@
     },
     {
       "path": "Z8-PORT-INVENTORY.json",
-      "bytes": 63872,
-      "sha256": "9535b2b8bc9aea0aa27246d0c42903dcaf331d9803e6ef20541fe6c606776be6"
+      "bytes": 63970,
+      "sha256": "03147ab45c5895972a9af38b1790fd8ab4a6f5f43a967ded8c860a99f56ab5d0"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,13 +108,18 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 3928,
-      "sha256": "a6c18ddb78b331c653324eb6e4e2992e4409427fe5e1b84127efdba2ea1137f7"
+      "bytes": 4359,
+      "sha256": "f474c07a241eee8f2784f44d7b01708864df20bd31e327e29778e3bef0292d22"
     },
     {
       "path": "docs/z8-sdk.md",
       "bytes": 1450,
       "sha256": "9e07e943bb6196d9ea211320e50b1bf3895f180b2c67602bb40cfcaaa7293022"
+    },
+    {
+      "path": "docs/z8-usage.zh-CN.md",
+      "bytes": 12700,
+      "sha256": "82ff745e28a4df497fec15b35f45bfc7b282a05efe996f2e132f35fcfae73d77"
     },
     {
       "path": "emulation/c110_menu.ld",
@@ -1318,8 +1323,8 @@
     },
     {
       "path": "modules/photo_tools/README.md",
-      "bytes": 3166,
-      "sha256": "5b5413a4b96a4237de8dcb914d05a67b50af0d9394e6e4ca2b5a3043e3a4b199"
+      "bytes": 2985,
+      "sha256": "c680642bb8de52996156eb9a6f8e959e5fa9925e18ba7174c311796ee81fbbeb"
     },
     {
       "path": "modules/photo_tools/module.c",

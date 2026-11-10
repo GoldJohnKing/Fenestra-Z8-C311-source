@@ -1,12 +1,18 @@
 # Z8 C3.11 本地构建
 
-先按 [README](../README.md) 准备 LLVM、Python 依赖和原厂 C3.11 包。下列命令使用从原厂包提取的无 CRC MAIN。固件包与 MAIN 都有固定的完整 SHA-256，其他版本需要独立适配。
+使用 Release 的七个 WLM 时，按[使用手册](z8-usage.zh-CN.md#准备底座)构建精确的 `cold-retry3`。以下命令供开发者构建其他本地配置。先准备 Python 3.11+ 和 LLVM，将 `clang`、`ld.lld`、`llvm-objcopy`、`llvm-nm` 加入 PATH，再用官方 C3.11 提取无 CRC MAIN。固件包和 MAIN 都会校验 SHA-256。[尼康原始文件](https://download.nikonimglib.com/archive8/wP5Vr003qbpC07ibhJ666rmRfF47/Z_8_0311.bin)
+
+```sh
+python -m pip install -r requirements-z8.txt
+python fenestra_z8.py extract --firmware inputs/Z_8_0311.bin --external-project vendor/NikonFirmwarePatch-container --output inputs/z8-c311-main.bin
+```
 
 ## 底座
 
-普通底座由 README 中的 `fenestra.py build` 编译并离线验证。要编译带 ProRes 后端或带通用原生 WLM 加载器的底座，分别运行以下命令。选项互斥。
+第一条编译并离线验证普通底座。后两种配置分别带 ProRes 后端或通用原生 WLM 加载器，选项互斥。
 
 ```sh
+python fenestra.py build --target z8-c311 --firmware inputs/z8-c311-main.bin --output build/local-core
 python host/build_z8_core.py --firmware inputs/z8-c311-main.bin --prores-backend --output-dir build/local-prores-core
 python host/build_z8_core.py --firmware inputs/z8-c311-main.bin --native-capsules --output-dir build/local-native-core
 python host/verify_z8_core.py --firmware inputs/z8-c311-main.bin --build build/local-native-core --output build/local-native-core/verification.json
@@ -20,7 +26,7 @@ python fenestra.py make-patch --target z8-c311 --firmware inputs/Z_8_0311.bin --
 
 ## 原生 WLM
 
-取 [NikonFirmwarePatch v0.4.0-rc.2](https://github.com/XinmiaoZhao/NikonFirmwarePatch/releases/tag/v0.4.0-rc.2) 的 `NikonFirmwarePatch-v0.4.0-rc.2-toolkit.zip`，保存到本地 `inputs/`。下列脚本校验压缩包和所需成员的哈希，然后提取到本地 vendor 子目录。此依赖及其预编译补丁单元由上游提供，许可仍由上游决定。
+取 [NikonFirmwarePatch v0.4.0-rc.2](https://github.com/XinmiaoZhao/NikonFirmwarePatch/releases/tag/v0.4.0-rc.2) 的 `NikonFirmwarePatch-v0.4.0-rc.2-toolkit.zip`，保存到本地 `inputs/`。下列脚本校验压缩包和所需成员的哈希，然后提取到本地 vendor 子目录。此工具包及预编译补丁单元由 NikonFirmwarePatch 项目提供，按该项目的许可使用。
 
 ```sh
 python scripts/prepare_z8_feature_toolkit.py inputs/NikonFirmwarePatch-v0.4.0-rc.2-toolkit.zip
@@ -43,7 +49,7 @@ python host/package_z8_wlm_plugins.py --components build/local-components --fron
 
 目录参数都使用新路径。组件构建会用原厂输入和选定配方独立核对语言表地址。五个生成的 WLM 分别输出到 `build/local-plugins/FENESTRA/`。
 
-卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 复建说明](https://github.com/PIPA12344/Fenestra-Z8-C311-source/blob/cold-retry3-source/docs/z8-cold-retry3-build.zh-CN.md) 生成 `build/cold-retry3/core/z8-core.main`。
+卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 复建说明](z8-usage.zh-CN.md#准备底座) 生成 `build/cold-retry3/core/z8-core.main`。
 
 ## Windows 调试工作台
 
