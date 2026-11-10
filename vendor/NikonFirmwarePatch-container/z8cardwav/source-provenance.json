@@ -1,0 +1,96 @@
+{
+  "upstream": "s3lemming/z9-firmware-patch",
+  "commit": "88a6f3e5195d7f38792dc8eddeb1526fde4096dc",
+  "license": "GPL-3.0-or-later",
+  "files": {
+    "adapter.c": {
+      "original_sha256": "dc61c61cad6880baca2977966eb9eee686670657c914a5a7046809302c8c29b6",
+      "adapted_sha256": "737e4f34cff9ff3f645bdce8e8b4c5750a320a83d7407ffedb8df8b39da309e4",
+      "modified": true
+    },
+    "mark2_import.c": {
+      "original_sha256": "335531920a498b57484652c3365df3e44b522c7e9b4c10ef6f097a6575a8dba1",
+      "adapted_sha256": "335531920a498b57484652c3365df3e44b522c7e9b4c10ef6f097a6575a8dba1",
+      "modified": false
+    },
+    "mark2_import.h": {
+      "original_sha256": "8823e23ce2066a205b9e3867c450f48db4f22574c76a8ca1e059dcc1d159371f",
+      "adapted_sha256": "17c00dba2836b61ba9eb9d1ec58668d25b38c59e64bfc1c2e9cd12fcc0aa612e",
+      "modified": true
+    },
+    "mark2_native_file.c": {
+      "original_sha256": "2f7bc114255785ed51912863997ba263179b48fa9335b84765e793ee05b583d1",
+      "adapted_sha256": "58ac8be30a14441bf0d18dc925e75ed1131e1f330b496ce1de4d25c287255497",
+      "modified": true
+    },
+    "picker.c": {
+      "original_sha256": "8dc9e9cdc6d49ce2227c9f22cb6c2a280382383cd780031226609079516bb76b",
+      "adapted_sha256": "0d99bd26f034997ebd59d6d7c0c13eb28794cfda1bf227f47dfb14d1e14031bc",
+      "modified": true
+    },
+    "profile.c": {
+      "original_sha256": "ff3d503c5fa860f10e890b7705449bcf9cc1f26f23e395a52b24ee24d8ba9cc2",
+      "adapted_sha256": "ff3d503c5fa860f10e890b7705449bcf9cc1f26f23e395a52b24ee24d8ba9cc2",
+      "modified": false
+    },
+    "profile.h": {
+      "original_sha256": "94ff7ad9617e1505fc74cf9e9d988947b71a51e8f368e01e72a681c880bcfb63",
+      "adapted_sha256": "94ff7ad9617e1505fc74cf9e9d988947b71a51e8f368e01e72a681c880bcfb63",
+      "modified": false
+    },
+    "profile_native.c": {
+      "original_sha256": "e64ce0c8b3a3c61152a7faf8e23c4483781dc6f78594f11379f8542c9d351123",
+      "adapted_sha256": "362b44387ecb86d3f31cd092d61b64c83c58fb0c341ebffe2e181376ea405a82",
+      "modified": true
+    },
+    "runtime.c": {
+      "original_sha256": "38a49a22201ed5a2e2b78f6963a76a2aa1075521acb1a780886e7b4aeaf5fa77",
+      "adapted_sha256": "38a49a22201ed5a2e2b78f6963a76a2aa1075521acb1a780886e7b4aeaf5fa77",
+      "modified": false
+    }
+  },
+  "port_files_sha256": {
+    "builder.py": "a6e0d3eb06593850e9972c564bf5694b0f0eec2f34a8ff395ba91f8459f795c3",
+    "stack.py": "ef50166ca09498de07a7fd8452e945143e7ff2c6c0849d9e1647b149709bf989",
+    "envelope.py": "254a1bd7b2af146e0c63360ed182ed5f00573cced9c1230d4393cb47498e4c14",
+    "cli.py": "1895abcadfe9059dab356388d38a1e3e5e9f495be3f6d6cb14072095dbeac0c0",
+    "__main__.py": "094ed95e4162f662010d38cfb1102c776c3709c13654d9b3101a855aff5f5e12",
+    "verify_integration.py": "723d0a4e8dfc869a5014dc036d6d79c3e1032a920cab08e06f1d5eecbe91bf92",
+    "verify_staged.py": "19d084ee957f01acf7d33ee2f17dd5879b17465455d345acb785e9ecb1a78d52"
+  },
+  "extraction": {
+    "date": "2026-11-05",
+    "original_hashes": "../docs/extraction-provenance.json",
+    "note": "Firmware sources are unchanged; standalone envelope/CLI and portable stack import added. Obsolete build_port.py entry removed; original metadata retained in extraction record."
+  },
+  "standalone_updates": [
+    {
+      "version": "0.1.1",
+      "change": "Output firmware identity no longer gates confirmation, retry or staged IO; all three are always enabled."
+    }
+  ],
+  "fenestra_wlm": {
+    "upstream_release": "https://github.com/PIPA12344/z8-card-wav/releases/tag/v0.1.1",
+    "upstream_commit": "2e3fdebc84fe3f2fdde0a2dd3d15cb4b41d526a6",
+    "upstream_source_archive_sha256": "e0276e245af7d80dcd7f100bb2fd0196f989c9a46c45632d12d3202dc69c4cee",
+    "note": "The files and port_files_sha256 sections above describe the historical v0.1.1 tree. This section covers the separate WLM adaptation.",
+    "files_sha256": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "firmware/adapter.c": "196402030b1098d7fea9d278c18075ae2c89666afe794f7bb80279bca8289efa",
+      "firmware/mark2_import.c": "335531920a498b57484652c3365df3e44b522c7e9b4c10ef6f097a6575a8dba1",
+      "firmware/mark2_import.h": "17c00dba2836b61ba9eb9d1ec58668d25b38c59e64bfc1c2e9cd12fcc0aa612e",
+      "firmware/mark2_native_file.c": "58ac8be30a14441bf0d18dc925e75ed1131e1f330b496ce1de4d25c287255497",
+      "firmware/picker.c": "0f78f0767756af64aaf6250c814e542298886510b715e4b05a006b2661844b21",
+      "firmware/profile.c": "ff3d503c5fa860f10e890b7705449bcf9cc1f26f23e395a52b24ee24d8ba9cc2",
+      "firmware/profile.h": "94ff7ad9617e1505fc74cf9e9d988947b71a51e8f368e01e72a681c880bcfb63",
+      "firmware/profile_native.c": "362b44387ecb86d3f31cd092d61b64c83c58fb0c341ebffe2e181376ea405a82",
+      "firmware/runtime.c": "38a49a22201ed5a2e2b78f6963a76a2aa1075521acb1a780886e7b4aeaf5fa77",
+      "firmware/wlm.ld": "0a76f79c702b4538748003c0d135509c7f0f9b1844ca603705fc4120e744b17f",
+      "firmware/wlm_layout.h": "8c68154b6821cbd355f7a7e5f9b366c84272ef536d63b756d291a661132d2564",
+      "firmware/wlm_pack.c": "782b3d3ffa66ab82de1daa4fd47ac1cd8aa3b30c767e71b4e06a91db64dcb8f1",
+      "verify_integration.py": "1906d502f5f963da1d6343789cc9df23259aa38dd0441a81a524cfc6e2993fbd",
+      "verify_staged.py": "19d084ee957f01acf7d33ee2f17dd5879b17465455d345acb785e9ecb1a78d52",
+      "wlm_hooks.py": "385c9f9a24a4f12d8a92d5d56e3e07469507dea364e4a0f0804cb4ceaf178046"
+    }
+  }
+}
