@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
 #include <malloc.h>
+#endif
 #include "fenestra_pack_registry.h"
 static FxPackRegistry registry;
 static FxNativePackProvider providers[2];
@@ -64,8 +66,27 @@ static FxResult entry(const FxNativePackHost *h,FxNativePackExports *out){
     return FX_OK;
 }
 static int code(void *c,uintptr_t p){(void)c;return p==(uintptr_t)entry||p==(uintptr_t)event||p==(uintptr_t)pending||p==(uintptr_t)provider||p==(uintptr_t)native_function;}
-static void *allocate(void *c,uint32_t n,uint32_t a){(void)c;assert(a==16);++allocations;return _aligned_malloc(n,a);}
-static void release(void *c,void *p){(void)c;++releases;_aligned_free(p);}
+static void *allocate(void *c, uint32_t n, uint32_t a) {
+    (void)c;
+    assert(a == 16);
+    ++allocations;
+#ifdef _WIN32
+    return _aligned_malloc(n, a);
+#else
+    size_t alignment = a;
+    size_t size = ((size_t)n + alignment - 1u) & ~(alignment - 1u);
+    return aligned_alloc(alignment, size);
+#endif
+}
+static void release(void *c, void *p) {
+    (void)c;
+    ++releases;
+#ifdef _WIN32
+    _aligned_free(p);
+#else
+    free(p);
+#endif
+}
 static void wake(void *c){(void)c;++wakes;}
 static void reset(uint32_t which){
     memset(&state,0,sizeof(state));state.business=FX_OK;case_id=which;outer_cookie=0;allocations=releases=wakes=0;owner.phase=FX_OWNER_RUNNING;

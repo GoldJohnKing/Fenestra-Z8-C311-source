@@ -530,7 +530,7 @@
     "tests/test_native_probe.py": "485305cf0d0478382586cadda023530a50c21dd10bf319083c1372f9dbe3d8c7",
     "tests/test_native_probe_module.c": "76db32664de77be2ce0ceeea9dc8b54da4283e8c7251b39d9efc180f71cd488a",
     "tests/test_native_profile.c": "5bf161d310add3d801a305aedb92d014d15bcf2020349dffd0482603114034a3",
-    "tests/test_pack_registry.c": "ded2640fa2419ca8823f28338159265fc3e67b0df25797f5ac0404208159d9f1",
+    "tests/test_pack_registry.c": "ffc730cb0cb3fb9c5a45f52e2cc7263e4ab00201265aa1c8643f1b4e76aca39a",
     "tests/test_pack_registry.py": "312b0946c9e31fcf39e963a26b74e4ec5add3cb4fa239944f95da5fb917196e3",
     "tests/test_pack_registry_many.c": "5174423447d1c33d6d5681c8130e97258c15f01fa665e6a7d5ba4548c246d4b3",
     "tests/test_photo_tools.c": "94f34cd94b9da967c8170287b3240c466050c4317ba405feca6baf8c35768b3d",
