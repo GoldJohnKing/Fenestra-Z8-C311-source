@@ -6,14 +6,13 @@
 #include "fenestra_photo_tools.h"
 #include "fenestra_memory.h"
 enum {CONFIGURE,PAGE,OPEN,QUERY,UI,POLL,START,CANCEL,DECLARE,TOPEN,TREAD,TSTORE};
-/* RAW-only test capsule only (r6): page 0x409fc000 = "C40RAW03", +8 C30 rate (0 = 30 fps, 1 = 40 fps in FX RAW-only),
- * +0xc its numerator, +0x30 C60 rate (1 = 80 fps, DX RAW-only on sensor driver 12), +0x34 C120 rate (1 = 140 fps,
- * RAW-only), +0x38/+0x3c their numerators. RAM only: the capsule starts every boot at the stock rates. */
+/* RAW-only rate table: +8 enables FX C40 and +0x34 enables FX C140.
+ * The numerators are at +0xc and +0x3c. The capsule starts at stock rates. */
 #define C40_TABLE "photo.c40.rate"
 #define C40_PAGE UINT64_C(0x40b51000)
 static const char c40_marker[8]={'C','4','0','R','A','W','0','3'};
 static FxSdkClient client;
-static uint32_t stage,ui_id=1u,unavailable,published,armed,mode,revision[12],opened,rate[3],rate_ok,want,want_at;
+static uint32_t stage,ui_id=1u,unavailable,published,armed,mode,revision[12],opened,rate[2],rate_ok,want,want_at;
 static uint64_t binding,table;
 static FxPhotoToolsStatus current,shown;
 /* Copied UI strings are UTF-8. Keep complete codepoints and reserve the full
@@ -49,7 +48,7 @@ static const char *state(void){
 static void progress(char out[FX_UI_TEXT]){uint32_t at=0u;append_text(out,current.total?FX_UI_TEXT-22u:FX_UI_TEXT,&at,state());if(current.total){append_text(out,FX_UI_TEXT,&at," ");number(out,FX_UI_TEXT,&at,current.rows);append_text(out,FX_UI_TEXT,&at,"/");number(out,FX_UI_TEXT,&at,current.total);}}
 static void control(FxUiControl *c){
     memset(c,0,sizeof(*c));c->abi=1;c->bytes=sizeof(*c);c->id=ui_id;c->parent=ui_id==1u?0u:1u;
-    c->kind=ui_id==1u?FX_UI_PAGE:(ui_id==3u||ui_id==4u||ui_id>=9u)?FX_UI_CHOICE:FX_UI_ACTION;c->flags=FX_UI_VISIBLE;
+    c->kind=ui_id==1u?FX_UI_PAGE:(ui_id==3u||ui_id==4u||ui_id==9u||ui_id==11u)?FX_UI_CHOICE:FX_UI_ACTION;c->flags=FX_UI_VISIBLE;
     if(ui_id==1u){c->flags|=FX_UI_ENABLED;text(c->label,"照片工具");}
     else if(ui_id==2u){text(c->label,"RAW 预拍摄");text(c->text,"C15/C30：相机图像品质 / RAW菜单");}
     else if(ui_id==3u){if(ready())c->flags|=FX_UI_ENABLED;text(c->label,"合并组");c->value=mode;c->option_count=2;text(c->options[0],"最新未合并组");text(c->options[1],"所有未合并组");}
@@ -60,11 +59,9 @@ static void control(FxUiControl *c){
     else if(ui_id==9u){text(c->label,"C30 连拍速度");
         if(rate_ok){c->flags|=FX_UI_ENABLED;c->value=rate[0];c->option_count=2u;text(c->options[0],"30 张/秒");text(c->options[1],"40 张/秒（FX 仅RAW）");}
         else{c->option_count=1u;text(c->options[0],"不可用");}}
-    else if(ui_id==10u){text(c->label,"C60 连拍速度");
-        if(rate_ok){c->flags|=FX_UI_ENABLED;c->value=rate[1];c->option_count=2u;text(c->options[0],"60 张/秒");text(c->options[1],"80 张/秒（DX 仅RAW）");}
-        else{c->option_count=1u;text(c->options[0],"不可用");}}
+    else if(ui_id==10u){text(c->label,"DX C60 RAW");text(c->text,"使用相机 C60 档（60 张/秒）");}
     else if(ui_id==11u){text(c->label,"C120 连拍速度");
-        if(rate_ok){c->flags|=FX_UI_ENABLED;c->value=rate[2];c->option_count=2u;text(c->options[0],"120 张/秒");text(c->options[1],"140 张/秒（仅RAW）");}
+        if(rate_ok){c->flags|=FX_UI_ENABLED;c->value=rate[1];c->option_count=2u;text(c->options[0],"120 张/秒");text(c->options[1],"140 张/秒（仅RAW）");}
         else{c->option_count=1u;text(c->options[0],"不可用");}}
     else {text(c->label,"RAW 格式");text(c->text,current.raw_recording==1u?"C15/C30下无损选项录制HE*":current.raw_recording==3u?"HE*":current.raw_recording==4u?"HE":"使用FX/DX L、C15/C30及HE/HE*");}
 }
@@ -86,8 +83,8 @@ int fenestra_module_entry(const FxModuleServices *base){
         else if(stage==TREAD){
             uint32_t v[16];rate_ok=0u;
             if(r.result==FX_OK&&r.bytes==sizeof(v)){memcpy(v,r.data,sizeof(v));
-                if(!memcmp(v,c40_marker,8)&&v[2]<2u&&v[3]==40000u&&v[12]<2u&&v[13]<2u&&v[14]==80000u&&v[15]==140000u){
-                    rate[0]=v[2];rate[1]=v[12];rate[2]=v[13];rate_ok=1u;}}
+                if(!memcmp(v,c40_marker,8)&&v[2]<2u&&v[3]==40000u&&v[12]==0u&&v[13]<2u&&v[14]==0u&&v[15]==140000u){
+                    rate[0]=v[2];rate[1]=v[13];rate_ok=1u;}}
             if(!opened)stage=OPEN;else{published=0;stage=binding?QUERY:UI;ui_id=2u;}
         }
         else if(stage==TSTORE)stage=TREAD;                                 /* show what the page now holds */
@@ -103,7 +100,7 @@ int fenestra_module_entry(const FxModuleServices *base){
                     else if(e.control==4u&&e.event==FX_INPUT_CHANGE&&e.value<2u&&ready()){armed=e.value;published=0;}
                     else if(e.control==5u&&e.event==FX_INPUT_ACTIVATE&&ready()&&armed)stage=START;
                     else if(e.control==6u&&e.event==FX_INPUT_ACTIVATE&&(current.flags&FX_PHOTO_RUNNING))stage=CANCEL;
-                    else if(e.control>=9u&&e.event==FX_INPUT_CHANGE&&e.value<2u&&rate_ok&&table){want=e.value;want_at=e.control==9u?8u:e.control==10u?0x30u:0x34u;stage=TSTORE;}
+                    else if((e.control==9u||e.control==11u)&&e.event==FX_INPUT_CHANGE&&e.value<2u&&rate_ok&&table){want=e.value;want_at=e.control==9u?8u:0x34u;stage=TSTORE;}
                 }
             }
         }else return 6;

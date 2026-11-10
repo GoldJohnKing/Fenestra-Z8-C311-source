@@ -19,19 +19,15 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'modules/photo_tools/r10'
 MODULE = 'photo_tools'
 CAVE, LIMIT = 0x409f0000, 0x409fc000
-STOCK_RAM_FILE_DELTA = 0x9fdcf5000
-R10_SHA256 = '1f1cf2016022410df03fe910df725e0639f0ed8bafc491e47e3d6428e0eea38f'
-R10_CODE_SHA256 = '637d514057de8d0262093963ecbc40ed967249f061bc31e537ce85a7d2320225'
+R10_SHA256 = '1314d7901a76e75c6156434ba27372d3390bb6eb0c11582b4e2ea187f7d69ef2'
+R10_CODE_SHA256 = 'fd98f4e298fc80b4e5146315a2f3d6ddd043c6da35859343e092befd74a2228f'
 
 # Only the r10 branch sites are listed here. The FileService and NVMe timing
 # hooks used by r10p are separate from this recipe.
 JUMPS = (
     (0x41174b34, '08254029', 'c40_fraction'),
-    (0x411718a0, 'e00b0032', 'c80_driver'),
     (0x41174a10, '691c0072', 'hs_fraction'),
-    (0x410622d4, '090040b9', 'c80_crop_entry'),
-    (0x41065194, 'ffc302d1', 'c80_isp_entry'),
-    (0x41062000, 'f40f1ef8', 'c80_desc_entry'),
+    (0x41062000, 'f40f1ef8', 'c120_desc_entry'),
     (0x40273b74, '80000054', 'wa_alignment_branch'),
     (0x40273bd4, 'dc000035', 'wa_copy_branch'),
 )
@@ -47,10 +43,6 @@ CALLS = (
     (0x406cd6a0, 0x4085b6d4, 'wt_finish'),
     (0x402d9d20, 0x402dd78c, 'wa_background_write'),
     (0x402dc850, 0x402dd78c, 'wa_background_write'),
-)
-POINTERS = (
-    (0xa02a99a48 + 12 * 8, 0x411749d0, 'c80_rate_query'),
-    (0xa02a99af8 + 12 * 8, 0x41174aa4, 'c80_fraction_path'),
 )
 
 
@@ -91,16 +83,11 @@ def replace_capture_backend(stock, old_capsule, code, symbols):
     def va(name):
         return int(symbols[name]['va'], 0)
 
-    crop_at = 0xa0297c378 - STOCK_RAM_FILE_DELTA
-    crop = bytearray(stock[crop_at:crop_at + 0x178])
-    if struct.unpack_from('<4H', crop) != (5392, 1444, 3592, 548):
-        raise ValueError('original C60 crop record differs')
-    struct.pack_into('<4H', crop, 0, 5392, 256, 3592, 12)
     rates = b'C40RAW03' + struct.pack('<II', 0, 40000)
-    rates = (rates.ljust(0x30, b'\0') + struct.pack('<4I', 0, 0, 80000, 140000)).ljust(0x100, b'\0')
+    rates = rates.ljust(0x3c, b'\0') + struct.pack('<I', 140000)
     changes.extend((
         page(stock, 0x40bd0000, b'RO1DXTRC'),
-        page(stock, 0x40b51000, rates + bytes(crop)),
+        page(stock, 0x40b51000, rates),
         page(stock, 0x409fd000, b'ROEVT002'),
         page(stock, 0x40b50000, (bytes(64) + b'WTALGN05').ljust(0x140, b'\0') + b'WCBURST1'),
     ))
@@ -112,9 +99,6 @@ def replace_capture_backend(stock, old_capsule, code, symbols):
     for site, old, name in CALLS:
         changes.append(checked_patch(stock, site - BASE, branch(site, va(name), link=True),
                                      name, branch(site, old, link=True)))
-    for site, old, name in POINTERS:
-        changes.append(checked_patch(stock, site - STOCK_RAM_FILE_DELTA, struct.pack('<Q', va(name)),
-                                     name, struct.pack('<Q', old)))
 
     removed = {p.address for p in base_edits}
     patches = sorted([p for p in old_capsule['patches'] if p.address not in removed] + changes,

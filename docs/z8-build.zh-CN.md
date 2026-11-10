@@ -59,7 +59,7 @@ python host/package_z8_wlm_plugins.py --components build/local-components --fron
 python -B host/build_photo_tools_r10.py --stock inputs/z8-c311-main.bin --base-wlm build/local-plugins/FENESTRA/photo_tools.wlm --llvm-bin $llvm --output-dir build/local-photo-tools-r10
 ```
 
-产物为 `build/local-photo-tools-r10/photo_tools.wlm`。脚本验证源生成的原生代码与最终 WLM，最终 SHA-256 应为 `1f1cf2016022410df03fe910df725e0639f0ed8bafc491e47e3d6428e0eea38f`。使用方法见[照片工具](plugins/photo_tools.md)。
+产物为 `build/local-photo-tools-r10/photo_tools.wlm`。脚本验证源生成的原生代码与最终 WLM，最终 SHA-256 应为 `1314d7901a76e75c6156434ba27372d3390bb6eb0c11582b4e2ea187f7d69ef2`。使用方法见[照片工具](plugins/photo_tools.md)。
 
 ## Windows 调试工作台
 

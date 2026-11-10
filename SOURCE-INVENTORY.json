@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 64999,
-      "sha256": "21e7eb59b1a6c290757fb9ab3be36206c6be7a72b26307446768ba389b364757"
+      "sha256": "4112e2b4ed6b0362b294298e7ba007079bbd9d2219bcdfe057d04efe2ffe50c0"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/plugins/photo_tools.md",
-      "bytes": 4406,
-      "sha256": "1ec6b91621238f1f16bb5ff480253c3b9aab0f69b69a43cedad7d62d8620cfbc"
+      "bytes": 4325,
+      "sha256": "8acadb2b29d126d3d07e203ba1a56750bc72b7b8c3ed7513b11c8096a39ae8af"
     },
     {
       "path": "docs/plugins/portrait_video.md",
@@ -144,7 +144,7 @@
     {
       "path": "docs/z8-build.zh-CN.md",
       "bytes": 5310,
-      "sha256": "4ceb1e198cb5d94a940d09c98ee4e9bd5f09ed208d0e5c4f65752d6e0959f29e"
+      "sha256": "ce15a4091ee87df39ac143d8b57c6aa2021914543b2c5028155399c10d9fa5fa"
     },
     {
       "path": "docs/z8-sdk.md",
@@ -253,8 +253,8 @@
     },
     {
       "path": "host/build_photo_tools_r10.py",
-      "bytes": 8972,
-      "sha256": "7e717727d7b73892853ad7d87d3cfdc5fcc557fe22b94e1f91e5a2be038de5c6"
+      "bytes": 8120,
+      "sha256": "cb01afdc6b69a8a50aa9cb3228e0d0918fc0438acf012ea6ef216c566aa54d40"
     },
     {
       "path": "host/build_sdk_module.py",
@@ -1373,13 +1373,13 @@
     },
     {
       "path": "modules/photo_tools/r10/module.c",
-      "bytes": 10712,
-      "sha256": "2db286aba191f254a4d53171acdbed4f512237efc641e5b2909ba62c7e6d4267"
+      "bytes": 10329,
+      "sha256": "a5d53c2278952dc9127d410b55e3c7398c61bcdbbddba9146dba103c94aaaaa1"
     },
     {
       "path": "modules/photo_tools/r10/precapture.c",
-      "bytes": 124159,
-      "sha256": "f889badad56be03f0d1e9e78d91cd10a4af7f91b355b7a0bc07dd8d0befb2294"
+      "bytes": 118811,
+      "sha256": "5a611e667f654c6a1a9b370b5b8660cd3da68d70b50ec9c11290cb8937baf591"
     },
     {
       "path": "modules/portrait_video/hooks.S",
