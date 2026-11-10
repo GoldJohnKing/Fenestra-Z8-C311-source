@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 64999,
-      "sha256": "d9e7edfd7ccca89a2bbdf0ca93dacb015c6c42f0fba608fec54aef47364583c5"
+      "sha256": "21e7eb59b1a6c290757fb9ab3be36206c6be7a72b26307446768ba389b364757"
     },
     {
       "path": "docs/api-reference.md",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/plugins/photo_tools.md",
-      "bytes": 4487,
-      "sha256": "ac8d00b71d92ab408fd3e526f9152b356d80ce2de00453d24566c808dd6c33f3"
+      "bytes": 4406,
+      "sha256": "1ec6b91621238f1f16bb5ff480253c3b9aab0f69b69a43cedad7d62d8620cfbc"
     },
     {
       "path": "docs/plugins/portrait_video.md",
@@ -143,8 +143,8 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 5451,
-      "sha256": "87ee093744cefa5100dcabc58874e90de523e62c2d4d5a3f302ee004e725c80d"
+      "bytes": 5310,
+      "sha256": "4ceb1e198cb5d94a940d09c98ee4e9bd5f09ed208d0e5c4f65752d6e0959f29e"
     },
     {
       "path": "docs/z8-sdk.md",

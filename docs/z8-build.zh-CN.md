@@ -53,7 +53,7 @@ python host/package_z8_wlm_plugins.py --components build/local-components --fron
 
 ## 照片工具 r10
 
-准备上节的 NikonFirmwarePatch 工具包及原厂 C3.11 MAIN。以刚构建的 `build/local-plugins/FENESTRA/photo_tools.wlm` 为基础包，或使用[较早 Release 的基础包](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10/photo_tools.wlm)。使用 Windows x64 LLVM **19.1.5** 构建。
+准备上节的 NikonFirmwarePatch 工具包及原厂 C3.11 MAIN。先按上节构建基础包 `build/local-plugins/FENESTRA/photo_tools.wlm`，再用 Windows x64 LLVM **19.1.5** 构建 r10。
 
 ```powershell
 python -B host/build_photo_tools_r10.py --stock inputs/z8-c311-main.bin --base-wlm build/local-plugins/FENESTRA/photo_tools.wlm --llvm-bin $llvm --output-dir build/local-photo-tools-r10
