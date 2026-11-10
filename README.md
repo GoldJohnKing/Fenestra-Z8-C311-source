@@ -4,6 +4,10 @@ Fenestra 的 Nikon Z 8 C3.11 移植。这里提供核心、WLM SDK、功能插�
 
 > 这是实验性代码。上游 Fenestra 已发现潜在变砖风险并要求勿刷入其当前版本。本仓库供源码研究和离线构建，尚无整机资格验证。见 [WonderLantern/Fenestra](https://github.com/WonderLantern/Fenestra)。
 
+## WLM 下载
+
+七个功能插件可在 [GitHub Releases](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases) 单独下载。发布页列出各插件需要的底座和 SHA-256 校验文件。
+
 ## 本地构建
 
 安装 Python 3.11+ 和 LLVM，并把 `clang`、`ld.lld`、`llvm-objcopy`、`llvm-nm` 加入 PATH。自行下载并解压 C3.11，将 `Z_8_0311.bin` 放入本地 `inputs/`。工具会在提取前核对原厂包 SHA-256。见 [尼康下载中心](https://downloadcenter.nikonimglib.com/en/download/fw/606.html)。

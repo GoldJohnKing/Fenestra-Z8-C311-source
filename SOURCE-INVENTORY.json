@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2540,
-      "sha256": "2dbf9b828bbf2a5de6c2dac518658e945e65aa646df35da3667de217e8b3ce38"
+      "bytes": 2744,
+      "sha256": "27f8bc2cc1672188bb841d5a92f64d02e362d274b03ca711df53931bc610f217"
     },
     {
       "path": "Start-Z8-Debug.cmd",
@@ -54,7 +54,7 @@
     {
       "path": "Z8-PORT-INVENTORY.json",
       "bytes": 63872,
-      "sha256": "da2fe43ed299284ba71e93482b09d586fb6b9d997d77bbdc6e9b2d2423bef825"
+      "sha256": "6543e968e880ab61cb085861fa4a816c0ea9fc9df70f06746306ce653943c629"
     },
     {
       "path": "docs/api-reference.md",
