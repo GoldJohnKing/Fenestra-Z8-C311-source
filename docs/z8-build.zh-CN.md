@@ -42,14 +42,24 @@ python host/build_wlm_native_components.py --stock inputs/z8-c311-main.bin --con
 python host/package_wlm_native_components.py --catalog build/local-catalog --out build/local-components
 foreach ($id in 'framing', 'prores', 'h265', 'log_colour', 'photo_tools') {
     $source = if ($id -eq 'photo_tools') { "modules/$id/module.c" } else { "examples/$id/module.c" }
-    python fenestra_z8.py build-module $source --id $id --llvm-bin $llvm --output-dir "build/local-frontends/$id"
+    python fenestra_z8.py build-module $source --id $id --optimize s --llvm-bin $llvm --output-dir "build/local-frontends/$id"
 }
 python host/package_z8_wlm_plugins.py --components build/local-components --frontends build/local-frontends --output build/local-plugins
 ```
 
-目录参数都使用新路径。组件构建会用原厂输入和选定配方独立核对语言表地址。五个生成的 WLM 分别输出到 `build/local-plugins/FENESTRA/`。
+目录参数都使用新路径。组件构建会用原厂输入和选定配方独立核对语言表地址。五个生成的 WLM 分别输出到 `build/local-plugins/FENESTRA/`。画幅、ProRes、H.265 和 Log 色彩使用 Windows x64 LLVM 19.1.5 和 `--optimize s` 重建时，可得到当前 Release 对应的文件。此步骤的照片工具是用于下一步的基础包。
 
 卡内 WAV 和竖拍 MOV 的构建脚本位于 `host/build_z8_card_wav.py` 与 `host/build_z8_portrait_video.py`。它们需要经过哈希校验的 cold-retry3 底座 MAIN。按 [cold-retry3 复建说明](z8-usage.zh-CN.md#准备底座) 生成 `build/cold-retry3/core/z8-core.main`。
+
+## 照片工具 r10
+
+准备上节的 NikonFirmwarePatch 工具包及原厂 C3.11 MAIN。以刚构建的 `build/local-plugins/FENESTRA/photo_tools.wlm` 为基础包，或使用[较早 Release 的基础包](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10/photo_tools.wlm)。使用 Windows x64 LLVM **19.1.5** 构建。
+
+```powershell
+python -B host/build_photo_tools_r10.py --stock inputs/z8-c311-main.bin --base-wlm build/local-plugins/FENESTRA/photo_tools.wlm --llvm-bin $llvm --output-dir build/local-photo-tools-r10
+```
+
+产物为 `build/local-photo-tools-r10/photo_tools.wlm`。脚本验证源生成的原生代码与最终 WLM，最终 SHA-256 应为 `1f1cf2016022410df03fe910df725e0639f0ed8bafc491e47e3d6428e0eea38f`。使用方法见[照片工具](plugins/photo_tools.md)。
 
 ## Windows 调试工作台
 

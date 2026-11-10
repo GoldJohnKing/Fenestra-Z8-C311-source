@@ -6,9 +6,9 @@ Fenestra 的 Nikon Z 8 C3.11 移植。这里提供核心、WLM SDK、功能插�
 
 ## 开始使用
 
-1. **确认底座。** 本次七个功能 WLM 都配套 Nikon Z 8 C3.11 的 `cold-retry3`。已有该底座可以直接装插件。需要自行构建时，按手册下载原始输入并使用固定源码标签。[构建底座](docs/z8-usage.zh-CN.md#准备底座)
-2. **下载和安装。** 从 Release 选取所需的 WLM，复制到启动卡根目录的 `FENESTRA/`，再做一次完整冷启动。[下载 WLM](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10) · [安装、更新与停用](docs/z8-usage.zh-CN.md#安装插件)
-3. **机内使用。** 在设定菜单进入 Fenestra 激活，插件界面在并列的 **Z8Mouldes**。画幅、ProRes、H.265、Log、照片工具、卡内 WAV 和竖拍旋转各有使用步骤。[七个插件的用法](docs/z8-usage.zh-CN.md#七个插件怎么用)
+1. **确认底座。** 当前七个功能 WLM 都配套 Nikon Z 8 C3.11 的 `cold-retry3`。已有该底座可以直接装插件。需要自行构建时，按手册下载原始输入并使用固定源码标签。[构建底座](docs/z8-usage.zh-CN.md#准备底座)
+2. **下载和安装。** 从 Release 选取所需的 WLM，复制到启动卡根目录的 `FENESTRA/`，再做一次完整冷启动。[下载 WLM](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10-r10) · [安装、更新与停用](docs/z8-usage.zh-CN.md#安装插件)
+3. **机内使用。** 在设定菜单进入 Fenestra 激活，插件界面在并列的 **Z8Mouldes**。画幅、ProRes、H.265、Log、照片工具 r10、卡内 WAV 和竖拍旋转各有使用步骤。[七个插件的用法](docs/z8-usage.zh-CN.md#七个插件怎么用)
 
 ## 调试与开发
 

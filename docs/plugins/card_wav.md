@@ -2,7 +2,7 @@
 
 **文件** `card_wav.wlm`，**选曲入口** 扳手设定菜单 → 照相机声音 → 快门音类型 → `Load WAV from card`。
 
-配套 Nikon Z 8 C3.11 的 `cold-retry3`。复制到卡根目录的 `FENESTRA/` 后完整冷启动。[下载 card_wav.wlm](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10/card_wav.wlm) · [安装和停用](../z8-usage.zh-CN.md#安装插件)
+配套 Nikon Z 8 C3.11 的 `cold-retry3`。复制到卡根目录的 `FENESTRA/` 后完整冷启动。[下载 card_wav.wlm](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10-r10/card_wav.wlm) · [安装和停用](../z8-usage.zh-CN.md#安装插件)
 
 ## 放入音频并选曲
 

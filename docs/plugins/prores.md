@@ -2,7 +2,7 @@
 
 **文件** `prores.wlm`，**入口** 设定菜单 → Z8Mouldes → ProRes 品质 → 品质。
 
-配套 Nikon Z 8 C3.11 的 `cold-retry3`。复制到卡根目录的 `FENESTRA/` 后完整冷启动。[下载 prores.wlm](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10/prores.wlm) · [安装和停用](../z8-usage.zh-CN.md#安装插件)
+配套 Nikon Z 8 C3.11 的 `cold-retry3`。复制到卡根目录的 `FENESTRA/` 后完整冷启动。[下载 prores.wlm](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/download/wlm-2026.11.10-r10/prores.wlm) · [安装和停用](../z8-usage.zh-CN.md#安装插件)
 
 ## 选择 ProRes 档位
 

@@ -43,8 +43,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2701,
-      "sha256": "c201eb1883494d94a627ac19476bb2c0c45c9ccb56169729bb5794f7ca716dc1"
+      "bytes": 2709,
+      "sha256": "d921ced36649e5a70385ae3b5b99f0e8dc3546a2c3e82111c4eb324277ce7dc2"
     },
     {
       "path": "Start-Z8-Debug.cmd",
@@ -53,8 +53,8 @@
     },
     {
       "path": "Z8-PORT-INVENTORY.json",
-      "bytes": 64674,
-      "sha256": "1daf9526aeedbf47a7642266f465ce18a64aad5980c62662c1e7533a1aee8aa8"
+      "bytes": 64999,
+      "sha256": "586768094b1b07ef3d74a45bb62b4e76bf52d44d8ed168b0284477f167a3c2bb"
     },
     {
       "path": "docs/api-reference.md",
@@ -88,38 +88,38 @@
     },
     {
       "path": "docs/plugins/card_wav.md",
-      "bytes": 1300,
-      "sha256": "e5b4b67a6da4161832e334b396adf706049ad39197532908b944fcd967f978d4"
+      "bytes": 1304,
+      "sha256": "e9352754c8810946085b0d7dd83f8d3e3891ba6c8421ad32db3f74826eefb8ea"
     },
     {
       "path": "docs/plugins/framing.md",
-      "bytes": 1276,
-      "sha256": "f946bc9cc825b615b5584fa83fe5addf3edbe1f74cea0fdde683401f9b231669"
+      "bytes": 1280,
+      "sha256": "199e3a7e6e30845ed41f31327a434a205ff1054d02ac1112080b6f2fbfb90e78"
     },
     {
       "path": "docs/plugins/h265.md",
-      "bytes": 967,
-      "sha256": "3242de9e5a23f4a535190a580b045a4d91f03d8972e050c74ff4764d0532de30"
+      "bytes": 971,
+      "sha256": "f7978601ae035c9f2c929d4972ff4c7bf276e9a9ebaf58bba1b39085fdb611fb"
     },
     {
       "path": "docs/plugins/log_colour.md",
-      "bytes": 1400,
-      "sha256": "1eb8215b6b7256fb25f30eaeaaec406a555aaa24f23d10d68c5afc81c30bf69f"
+      "bytes": 1404,
+      "sha256": "7ed188d85ed090d053974e9c063bf06bb5bab3f425f7ff9d4bcd86f41a30ffe9"
     },
     {
       "path": "docs/plugins/photo_tools.md",
-      "bytes": 3874,
-      "sha256": "dc000a4554246c27a9a761ceb7b8679af930f38458405f67288456c83056d975"
+      "bytes": 4207,
+      "sha256": "5b4442708ac79abc0964b209f35b18036455cf4e43c853a26eb1e056c81cfe52"
     },
     {
       "path": "docs/plugins/portrait_video.md",
-      "bytes": 924,
-      "sha256": "0789ebf5459c8b4bb39419e41f1be0ec416936f92fd6e01ebde90a7f5c89966f"
+      "bytes": 928,
+      "sha256": "a682f36811d16f9d90a16a6df2dad2ffe206f86b39efbe12841f5b9dac637e98"
     },
     {
       "path": "docs/plugins/prores.md",
-      "bytes": 1014,
-      "sha256": "a720cf369254316a5ebfdedf3be8fab4bc050d84b87b1b7373ea2184b5f017a6"
+      "bytes": 1018,
+      "sha256": "05fb4e2ccb098fd57caa22ec8ada7bb327cdbf61eb671f1154cde005b953183c"
     },
     {
       "path": "docs/porting.md",
@@ -143,8 +143,8 @@
     },
     {
       "path": "docs/z8-build.zh-CN.md",
-      "bytes": 4359,
-      "sha256": "f474c07a241eee8f2784f44d7b01708864df20bd31e327e29778e3bef0292d22"
+      "bytes": 5391,
+      "sha256": "09456f6b20abd94ad903818322af5c21f09fef217c80933b81f712c2064bb02d"
     },
     {
       "path": "docs/z8-sdk.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "docs/z8-usage.zh-CN.md",
-      "bytes": 8285,
-      "sha256": "076fd4b8805f66a3913880d7a44c50e695c745e8da0f3fad9da7a3e02e998a17"
+      "bytes": 8264,
+      "sha256": "621ca9733e9d1742c1ccb1920f0becf8b786f66a825d5b08423317823ed9a22a"
     },
     {
       "path": "emulation/c110_menu.ld",
@@ -250,6 +250,11 @@
       "path": "host/build_linux_agent.py",
       "bytes": 1735,
       "sha256": "d7e8293bc0e4b6bdca5c7f5feba47460d968530b809cd551b01a1db07a2590d4"
+    },
+    {
+      "path": "host/build_photo_tools_r10.py",
+      "bytes": 8972,
+      "sha256": "7e717727d7b73892853ad7d87d3cfdc5fcc557fe22b94e1f91e5a2be038de5c6"
     },
     {
       "path": "host/build_sdk_module.py",
@@ -1358,13 +1363,23 @@
     },
     {
       "path": "modules/photo_tools/README.md",
-      "bytes": 2977,
-      "sha256": "9b5fd8388aa7f8c1a2fb6e0b9d502e42710b5bacb4646ca44881e367e4b69cd4"
+      "bytes": 3640,
+      "sha256": "bac17c3a3fb0960bf9038c8795548353c58b5c0056b66e40e78a3656eaceeed3"
     },
     {
       "path": "modules/photo_tools/module.c",
       "bytes": 7602,
       "sha256": "8bbd702f042e153e4f6e8908464a30f9efd8ebaa61c0c7e4a3f2bf669e407409"
+    },
+    {
+      "path": "modules/photo_tools/r10/module.c",
+      "bytes": 10712,
+      "sha256": "2db286aba191f254a4d53171acdbed4f512237efc641e5b2909ba62c7e6d4267"
+    },
+    {
+      "path": "modules/photo_tools/r10/precapture.c",
+      "bytes": 124159,
+      "sha256": "f889badad56be03f0d1e9e78d91cd10a4af7f91b355b7a0bc07dd8d0befb2294"
     },
     {
       "path": "modules/portrait_video/hooks.S",

@@ -1,6 +1,6 @@
 # Fenestra Z8 C3.11 使用手册
 
-这份手册对应 `wlm-2026.11.10` 的七个 WLM。相机需为 Nikon Z 8，配套底座为 **`cold-retry3`**。固件在本地构建，插件可以直接下载。Fenestra 仍处于实验阶段，WonderLantern/Fenestra 已提示潜在变砖风险。[WLM 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10) · [Fenestra 项目说明](https://github.com/WonderLantern/Fenestra)
+这份手册对应 `wlm-2026.11.10-r10` 的七个 WLM。相机需为 Nikon Z 8，配套底座为 **`cold-retry3`**。固件在本地构建，插件可以直接下载。Fenestra 仍处于实验阶段，WonderLantern/Fenestra 已提示潜在变砖风险。[WLM 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10-r10) · [Fenestra 项目说明](https://github.com/WonderLantern/Fenestra)
 
 ## 准备底座
 
@@ -31,7 +31,7 @@ Get-FileHash -Algorithm SHA256 -LiteralPath build/cold-retry3/Z_8_0311.bin
 
 ## 安装插件
 
-1. 从 Release 下载需要的 `.wlm`，用 `SHA256SUMS.txt` 核对文件。七个插件可以任选，多个一起装时使用同一 Release 的文件。[WLM 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10)
+1. 从 Release 下载需要的 `.wlm`，用 `SHA256SUMS.txt` 核对文件。七个插件可以任选，多个一起装时使用同一 Release 的文件。[WLM 下载](https://github.com/PIPA12344/Fenestra-Z8-C311-source/releases/tag/wlm-2026.11.10-r10)
 2. 正常关机并等卡访问灯熄灭，再把 WLM 按原名复制到启动卡根目录的 `FENESTRA/`。两个卡槽都有这个目录时，底座优先选 CFexpress/XQD 卡槽 A。只用 SD 时，在卡槽 B 的卡上建目录。
 3. 换好卡后做一次完整冷启动。关机、等访问灯熄灭、断开 USB，再取下电池片刻，装回后开机。普通的快速关开可能恢复原来的内存状态，冷启动才会重新读取卡上的插件。
 4. 在扳手设定菜单打开 **Fenestra**。`Status` 显示 `Ready` 时可按 `Activate`，变成 `Active` 后，从设定菜单并列的 **Z8Mouldes** 打开插件页。希望启动后自动激活时，在 Fenestra 里把 `Auto activate` 设为 `On`。
@@ -63,7 +63,7 @@ Get-FileHash -Algorithm SHA256 -LiteralPath build/cold-retry3/Z_8_0311.bin
 | `prores.wlm` | [ProRes 品质](plugins/prores.md) · ProRes 422 的 HQ、标准、LT 和 Proxy |
 | `h265.wlm` | [H.265 码率](plugins/h265.md) · 选择五档目标码率 |
 | `log_colour.wlm` | [Log 色彩](plugins/log_colour.md) · 选择 Log 曲线和色域，按对应输入处理素材 |
-| `photo_tools.wlm` | [照片工具](plugins/photo_tools.md) · 公开版 C15/C30 RAW、像素位移合并，以及本地实验版 C40/C140 的开启条件 |
+| `photo_tools.wlm` | [照片工具](plugins/photo_tools.md) · r10 的 C40、DX C60、C120/C140 RAW 和像素位移合并 |
 | `card_wav.wlm` | [卡内 WAV 快门声](plugins/card_wav.md) · 使用存储卡上的 WAV 作为快门声 |
 | `portrait_video.wlm` | [竖拍自动旋转](plugins/portrait_video.md) · 按开录时的机身方向写入视频旋转信息 |
 

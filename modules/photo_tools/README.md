@@ -1,12 +1,12 @@
 # Photo tools 插件（Z8 C3.11）
 
-公开版的 `photo_tools.wlm` 配套 `cold-retry3`，通过 Fenestra 加载照片工具的原生组件和菜单。使用机内「Z8Mouldes → 照片工具」查看状态和批量合并。RAW 预拍仍由相机原厂照片菜单操作。[安装和操作步骤](../../docs/plugins/photo_tools.md)
+公开版 `photo_tools.wlm`（r10） 配套 `cold-retry3`，通过 Fenestra 加载照片工具的原生组件和菜单。使用机内「Z8Mouldes → 照片工具」查看状态和批量合并。RAW 预拍仍由相机原厂照片菜单操作。[安装和操作步骤](../../docs/plugins/photo_tools.md)
 
 本模块使用 `camera.photo.tools/v1` 服务。原生实现采用 NikonFirmwarePatch 的固定版本，运行中的任务和文件写入由该组件管理。
 
 ## RAW 预拍
 
-使用相机原生照片菜单：FX/DX、L、C15/C30，然后选择普通“画质”和“RAW 记录”。HE/HE★ 可用；选择“无损压缩”实际回退 HE★。C60/C120、真正无损预拍、HLG/HEIF 和副卡独立 JPEG 尺寸不在支持范围。插件显示入口说明和当前 RAW 记录值。
+使用相机原生照片菜单：FX/DX、L、C15/C30，然后选择普通“画质”和“RAW 记录”。HE/HE★ 可用；选择“无损压缩”实际回退 HE★。这些设置属于 C15/C30 路径。r10 的 DX C60、FX C120/C140 走 RAW-only 路径，详见上面的操作文档。插件显示入口说明和当前 RAW 记录值。
 
 写入失败或超时可能生成 Z8PRESTP.BIN；保留两卡文件。停止文件机制继续有效。停用插件后，做一次完整冷启动以应用卡上的新状态。
 
@@ -17,6 +17,12 @@
 支持完整 4/8/16/32 张、FX/L、8256×5504、14-bit 无损压缩 NEF 组，支持任意起始文件编号和跨文件夹组。HE/HE★、DX、残缺、重复帧和 RAW 预拍输出不适用。输出由原生后端以新的 _MERGED.NEFX 或带序号文件名写入，原片及已有输出保留。4/8 张组输出 8256×5504，16/32 张组输出 16512×11008。
 
 「取消合并」请求原生工作线程取消；等待写入与关闭完成后才能卸载模块或完成核心停止。断开 GUI 前的停止请求也会直接原子设置当前序列的原生取消位。原厂文件句柄、任务块和线程栈的生命周期沿用原生后端，仍运行时保留核心和 owner。
+
+## r10 源码
+
+`r10/precapture.c` 和 `r10/module.c` 是 r10 原生实现和 WLM 界面的编译输入，由 `host/build_photo_tools_r10.py` 打包。[构建步骤](../../docs/z8-build.zh-CN.md#照片工具-r10)
+
+r10 的 RAW 实现基于 NikonFirmwarePatch v0.4.0-rc.2 的预拍摄源码并采用 GPL-3.0-only。构建保留基础版的像素位移组件和共享依赖，替换照片工具的 RAW 连拍后端及前端界面。[预拍摄源码](https://github.com/XinmiaoZhao/NikonFirmwarePatch/tree/a21fc8c04b6dd863439c4192d387b755633287f6/z8precapture) · [GPL-3.0 许可](../../vendor/NikonFirmwarePatch-container/LICENSE)
 
 ## 验证范围
 
