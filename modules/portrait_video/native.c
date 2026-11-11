@@ -5,7 +5,6 @@
 #define OPEN UINT32_C(0x80000000)
 #define COUNT_MASK (OPEN - 1u)
 #define WRITERS 16u
-#define POSE_ADDRESS UINT64_C(0xa03228244)
 
 static _Atomic uint32_t gate;
 /* The stock sample/finalize calls serialize each individual writer. The low
@@ -78,10 +77,44 @@ static _Atomic uintptr_t *find_writer(uintptr_t writer) {
     return 0;
 }
 
+/* Pose anchors from the orientation sensor: the subsystem enable byte and
+ * the normalised gravity vector f32 x3 that the sensor fusion task
+ * publishes at ~1 kHz.  Host tests redirect the anchors to local buffers
+ * by defining these macros before including this file. */
+#ifndef GRAVITY_ENABLE
+#define GRAVITY_ENABLE UINT64_C(0x0a02e56018)
+#endif
+#ifndef GRAVITY_VECTOR
+#define GRAVITY_VECTOR UINT64_C(0x0a02e560e0)
+#endif
+#ifndef AXIS_THRESHOLD
+#define AXIS_THRESHOLD UINT32_C(0x3f333333)
+#endif
+/* The dominant axis (x beats y, z must be strictly larger) above 0.70f
+ * indexes the empirical pose codes: +X upside-down (3), -X level (0),
+ * +Y shutter-bottom portrait (1), -Y shutter-top portrait (2), +/-Z the
+ * lens axis (0, no mark).  Sign-stripped float bits compare as unsigned
+ * integers, so no FPU is needed. */
+static const uint8_t AXIS_CODES[6] = {3u, 0u, 1u, 2u, 0u, 0u};
+
+static uint32_t classify_pose(void) {
+    if (*(const volatile uint8_t *)(uintptr_t)GRAVITY_ENABLE != 1u) return 0u;
+    uint32_t gx = *(const volatile uint32_t *)(uintptr_t)GRAVITY_VECTOR;
+    uint32_t gy = *(const volatile uint32_t *)(uintptr_t)(GRAVITY_VECTOR + UINT64_C(4));
+    uint32_t gz = *(const volatile uint32_t *)(uintptr_t)(GRAVITY_VECTOR + UINT64_C(8));
+    uint32_t best = gx & UINT32_C(0x7fffffff), sign = gx >> 31, axis = 0u;
+    uint32_t my = gy & UINT32_C(0x7fffffff), mz = gz & UINT32_C(0x7fffffff);
+    if (my > best) { best = my; sign = gy >> 31; axis = 1u; }
+    if (mz > best) { best = mz; sign = gz >> 31; axis = 2u; }
+    if (best < AXIS_THRESHOLD) return 0u;
+    return AXIS_CODES[axis * 2u + (sign & 1u)];
+}
+
 static void capture(uintptr_t writer) {
-    uint32_t pose = *(const volatile uint32_t *)(uintptr_t)POSE_ADDRESS;
-    /* Video-mode samples from the C3.11 workbench: grip up = 1, grip down = 2. */
-    uintptr_t tagged = (pose == 1u || pose == 2u) ? writer | pose : 0u;
+    uint32_t pose = classify_pose();
+    /* Codes 1..3 come from the gravity classifier; 0 leaves the slot at
+     * zero, which the matrix hook treats as stock. */
+    uintptr_t tagged = (pose >= 1u && pose <= 3u) ? writer | pose : 0u;
     _Atomic uintptr_t *slot = find_writer(writer);
     if (slot) {
         atomic_store_explicit(slot, tagged, memory_order_release);
@@ -123,13 +156,27 @@ void fx_portrait_matrix(uintptr_t writer, uint8_t *matrix, uint32_t width, uint3
             unsigned expected = i == 1u || i == 17u ? 1u : i == 32u ? 64u : 0u;
             if (matrix[i] != expected) goto done;
         }
-        if (pose == 1u || pose == 2u) {
-            uint32_t words[8] = {0u, 0x10000u, 0u, 0xffff0000u, 0u, 0u, height << 16, 0u};
+        if (pose >= 1u && pose <= 3u) {
+            /* Classifier codes: 1 = 90 deg CW (byte-for-byte the group the
+             * stock module wrote for its pose 2: b=+1/c=-1 with tx=height,
+             * the canonical Apple EXIF-6 pairing), 2 = 90 deg CCW (its
+             * pose 1: b=-1/c=+1 with ty=width), 3 = upside-down 180. The
+             * translations keep the rotated frame onscreen; the w word
+             * stays the stock identity's 2^30. */
+            uint32_t words[8] = {0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u};
             if (pose == 1u) {
+                words[1] = 0x10000u;
+                words[3] = 0xffff0000u;
+                words[6] = height << 16;
+            } else if (pose == 2u) {
                 words[1] = 0xffff0000u;
                 words[3] = 0x10000u;
-                words[6] = 0u;
                 words[7] = width << 16;
+            } else {
+                words[0] = 0xffff0000u;
+                words[4] = 0xffff0000u;
+                words[6] = width << 16;
+                words[7] = height << 16;
             }
             for (unsigned i = 0; i < 8u; ++i) {
                 uint32_t word = words[i];

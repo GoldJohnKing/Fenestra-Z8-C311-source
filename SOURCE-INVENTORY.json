@@ -113,8 +113,8 @@
     },
     {
       "path": "docs/plugins/portrait_video.md",
-      "bytes": 928,
-      "sha256": "a682f36811d16f9d90a16a6df2dad2ffe206f86b39efbe12841f5b9dac637e98"
+      "bytes": 1284,
+      "sha256": "f96de5e0a7ba23df24e7c8aec0a915916de4527c0869327672e33c4bb9aadb69"
     },
     {
       "path": "docs/plugins/prores.md",
@@ -1393,8 +1393,8 @@
     },
     {
       "path": "modules/portrait_video/native.c",
-      "bytes": 5970,
-      "sha256": "0a7cd0f1975051ddef70501c8317fc6f303f1775d8cb43c6344c3500f527eeaf"
+      "bytes": 8267,
+      "sha256": "12d439b5b8b68f583fd5f5437bca4a2862163ebcdf28e8b3af0684c650137a89"
     },
     {
       "path": "modules/portrait_video/native.ld",
@@ -2715,6 +2715,16 @@
       "path": "tests/test_photo_tools_module.c",
       "bytes": 6112,
       "sha256": "2567001ea5b6a346d102f10ed4c8af0d528157f037810c9947355f396481abe4"
+    },
+    {
+      "path": "tests/test_portrait_video.c",
+      "bytes": 6992,
+      "sha256": "d6204bd9fa6e3ba9d14f42f083e628678e51db15cac4041c6b44a0edb5039a84"
+    },
+    {
+      "path": "tests/test_portrait_video.py",
+      "bytes": 1315,
+      "sha256": "6c648b4dd50a6c1820c1087c8acbbb4241670a610478efb2673a5961018bc82d"
     },
     {
       "path": "tests/test_prores.c",
